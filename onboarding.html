@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Apply for membership in the FEFE Connect professional network." />
+    <meta name="theme-color" content="#163f3a" />
+    <title>Join FEFE Connect</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="onboarding.css" />
+    <script src="site-config.js"></script>
+    <script src="onboarding.js" defer></script>
+  </head>
+  <body class="onboarding-body">
+    <a class="skip-link" href="#application">Skip to application</a>
+    <header class="onboarding-header">
+      <a class="brand" href="index.html"><span class="brand-mark">F</span><span>FEFE <em>Connect</em></span></a>
+      <a class="back-link" href="index.html">← Back to the welcome page</a>
+    </header>
+
+    <main class="onboarding-layout" id="application">
+      <aside class="onboarding-aside">
+        <p class="eyebrow"><span></span> Membership application</p>
+        <h1>Let’s make a<br /><i>proper introduction.</i></h1>
+        <p>
+          Tell us a little about your work. We will use these details to review your
+          standing and prepare your professional profile.
+        </p>
+        <div class="assurance-list">
+          <p><b>✓</b><span><strong>Private by default</strong>Your profile stays hidden until approval.</span></p>
+          <p><b>✓</b><span><strong>Human review</strong>Automation helps; a person makes the final call.</span></p>
+          <p><b>✓</b><span><strong>No sensitive records</strong>We will not ask for client, patient, or case files.</span></p>
+        </div>
+      </aside>
+
+      <section class="application-card">
+        <div class="preview-banner" role="status">
+          <strong>Preview mode</strong> — secure payment and submission will activate when services are connected.
+        </div>
+        <div class="application-head">
+          <div>
+            <p class="application-step">Step <span data-step-number>1</span> of 3</p>
+            <h2 data-step-title>Choose your membership</h2>
+          </div>
+          <div class="progress" aria-label="Application progress"><span></span><span></span><span></span></div>
+        </div>
+
+        <form id="membership-form" novalidate>
+          <section class="form-step is-active" data-step="1">
+            <fieldset class="role-picker">
+              <legend>I am joining as a…</legend>
+              <label>
+                <input type="radio" name="role" value="legal" />
+                <span><b>Legal professional</b><small>Attorney, firm owner, legal team member</small></span>
+              </label>
+              <label>
+                <input type="radio" name="role" value="mental-health" />
+                <span><b>Mental-health professional</b><small>Licensed clinician, evaluator, consultant</small></span>
+              </label>
+            </fieldset>
+            <div class="membership-summary">
+              <span>Founding membership</span>
+              <strong>Pricing announced before launch</strong>
+              <p>Monthly membership · Cancel anytime · Review required</p>
+            </div>
+            <button class="form-button" type="button" data-checkout>
+              Continue to secure checkout <span>→</span>
+            </button>
+            <p class="form-note">In the live service, Stripe confirms membership before the application continues.</p>
+          </section>
+
+          <section class="form-step" data-step="2" hidden>
+            <div class="field-grid">
+              <label><span>First name</span><input name="firstName" autocomplete="given-name" required /></label>
+              <label><span>Last name</span><input name="lastName" autocomplete="family-name" required /></label>
+              <label class="full-field"><span>Professional email</span><input name="email" type="email" autocomplete="email" required /></label>
+              <label class="full-field"><span data-organization-label>Firm or organization</span><input name="organization" autocomplete="organization" required /></label>
+              <label><span>Primary state</span><select name="state" required><option value="">Select a state</option><option>New York</option><option>New Jersey</option><option>Connecticut</option><option>Pennsylvania</option><option>Other</option></select></label>
+              <label><span data-license-label>Bar or license number</span><input name="license" required /></label>
+              <label class="full-field"><span>Professional website <small>Optional</small></span><input name="website" type="url" placeholder="https://" /></label>
+            </div>
+            <div class="form-actions"><button class="text-button" type="button" data-back>← Back</button><button class="form-button" type="button" data-next>Continue <span>→</span></button></div>
+          </section>
+
+          <section class="form-step" data-step="3" hidden>
+            <label class="stacked-field"><span>Professional headline</span><input name="headline" maxlength="90" placeholder="What should members know first?" required /></label>
+            <label class="stacked-field"><span>About your work</span><textarea name="bio" rows="6" maxlength="700" placeholder="Share your approach, experience, and the connections you welcome." required></textarea></label>
+            <label class="stacked-field"><span>Specialties <small>Separate with commas</small></span><input name="specialties" placeholder="Family law, trauma, evaluations…" required /></label>
+            <label class="stacked-field"><span>Professional endorsement <small>Optional; subject to review</small></span><textarea name="endorsement" rows="3" maxlength="280"></textarea></label>
+            <label class="consent"><input type="checkbox" name="attest" required /><span>I confirm that these professional details are accurate and may be verified before publication.</span></label>
+            <div class="form-actions"><button class="text-button" type="button" data-back>← Back</button><button class="form-button" type="submit">Review my application <span>→</span></button></div>
+          </section>
+        </form>
+
+        <section class="success-panel" hidden tabindex="-1">
+          <span class="success-mark">✓</span>
+          <p class="section-kicker">Application preview complete</p>
+          <h2>You’re ready for review.</h2>
+          <p>
+            The front-end flow is working. Once Stripe and the secure application service
+            are connected, this is where applicants receive a confirmation and next steps.
+          </p>
+          <a class="form-button" href="index.html">Return to FEFE Connect <span>→</span></a>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>
