@@ -16,6 +16,7 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
+  overflow-x: hidden;
   color: var(--ink);
   background:
     radial-gradient(circle at 84% 7%, rgba(233, 120, 85, 0.12), transparent 26rem),
@@ -476,7 +477,7 @@ footer small { grid-column: 1 / -1; padding-top: 1.7rem; color: rgba(255,255,255
   .site-header { min-height: 72px; }
   h1 { font-size: clamp(3rem, 14vw, 4.2rem); }
   .hero { padding-top: 42px; gap: 2rem; }
-  .hero-scene { min-height: 420px; transform: scale(0.88); margin: -20px -30px; }
+  .hero-scene { min-height: 420px; transform: scale(0.88); margin: -20px 0; }
   .mini-law { left: 0; }
   .mini-match { right: 0; }
   .trust-strip ul { flex-direction: column; gap: 0.65rem; }
