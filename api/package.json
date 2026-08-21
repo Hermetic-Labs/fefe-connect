@@ -1,0 +1,36 @@
+{
+  "name": "fefe-connect-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Approval-gated FEFE Connect billing API",
+  "main": "dist/src/{index.js,functions/*.js}",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:client": "esbuild client/auth.ts --bundle --format=iife --global-name=FEFEAuthBundle --outfile=../assets/auth.bundle.js --minify",
+    "clean": "rimraf dist",
+    "prestart": "npm run clean && npm run build",
+    "start": "func start",
+    "test": "npm run clean && npm run build && node --test dist/test/**/*.test.js",
+    "check": "npm run clean && npm run build && npm run build:client",
+    "seed:approved": "tsx scripts/seed-approved-application.ts"
+  },
+  "dependencies": {
+    "@azure/data-tables": "^13.3.2",
+    "@azure/functions": "^4.16.2",
+    "@azure/identity": "^4.13.2",
+    "@azure/keyvault-secrets": "^4.10.0",
+    "@types/node": "^22.19.1",
+    "jose": "^6.2.9",
+    "stripe": "^22.5.0",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@azure/msal-browser": "^5.19.0",
+    "esbuild": "^0.28.2",
+    "rimraf": "^6.1.2",
+    "tsx": "^4.20.6"
+  }
+}

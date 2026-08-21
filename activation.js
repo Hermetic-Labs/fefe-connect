@@ -8,6 +8,9 @@ const apiBase = (activationConfig.applicationApiBase || "").replace(/\/$/, "");
 const approvedState = document.querySelector("[data-approved-state]");
 const ineligibleState = document.querySelector("[data-ineligible-state]");
 const processingState = document.querySelector("[data-processing-state]");
+const authState = document.querySelector("[data-auth-state]");
+const signInButton = document.querySelector("[data-sign-in-button]");
+const authMessage = document.querySelector("[data-auth-message]");
 const previewBanner = document.querySelector("[data-preview-banner]");
 const activationForm = document.querySelector("#activation-form");
 const planInputs = [...document.querySelectorAll('input[name="plan"]')];
@@ -40,18 +43,20 @@ function updateBillingDisclosure() {
 }
 
 function showOnly(state) {
-  [approvedState, ineligibleState, processingState].forEach((section) => {
+  [approvedState, ineligibleState, processingState, authState].forEach((section) => {
     section.hidden = section !== state;
   });
   state.focus?.();
 }
 
-async function authorizationHeaders() {
-  const token = await window.FEFE_AUTH?.getAccessToken?.();
-  return token ? { Authorization: `Bearer ${token}` } : {};
+async function authorizationHeaders(interactive = false) {
+  const token = await window.FEFE_AUTH?.getAccessToken?.({ interactive });
+  if (!token) throw new Error("Sign in to continue.");
+  return { Authorization: `Bearer ${token}` };
 }
 
 async function loadApplicationStatus() {
+  previewBanner.hidden = Boolean(apiBase);
   if (checkoutResult === "success") {
     showOnly(processingState);
     return;
@@ -68,19 +73,26 @@ async function loadApplicationStatus() {
     return;
   }
 
+  await window.FEFE_AUTH?.initialize?.();
+  if (!window.FEFE_AUTH?.isConfigured?.() || !window.FEFE_AUTH?.getAccount?.()) {
+    showOnly(authState);
+    return;
+  }
+
   try {
     const headers = { Accept: "application/json", ...(await authorizationHeaders()) };
     const response = await fetch(`${apiBase}/v1/applications/${encodeURIComponent(applicationId)}`, {
       method: "GET",
       headers,
-      credentials: "include",
+      credentials: "omit",
     });
     if (!response.ok) throw new Error("Application status could not be confirmed.");
     const application = await response.json();
     const eligible = ["approved", "activation_pending"].includes(application.status);
     showOnly(eligible ? approvedState : ineligibleState);
-  } catch {
-    showOnly(ineligibleState);
+  } catch (error) {
+    if (/sign in/i.test(error?.message || "")) showOnly(authState);
+    else showOnly(ineligibleState);
   }
 }
 
@@ -98,6 +110,22 @@ const requestedPlan = activationParams.get("plan");
 const requestedPlanInput = planInputs.find((input) => input.value === requestedPlan);
 if (requestedPlanInput) requestedPlanInput.checked = true;
 updateBillingDisclosure();
+
+signInButton.addEventListener("click", async () => {
+  signInButton.disabled = true;
+  signInButton.setAttribute("aria-busy", "true");
+  authMessage.textContent = "Opening secure sign-in…";
+  try {
+    await window.FEFE_AUTH?.signIn?.();
+    authMessage.textContent = "Sign-in confirmed. Checking your application…";
+    await loadApplicationStatus();
+  } catch (error) {
+    authMessage.textContent = error.message || "Sign-in could not be completed. Please try again.";
+  } finally {
+    signInButton.disabled = false;
+    signInButton.removeAttribute("aria-busy");
+  }
+});
 
 activationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -122,12 +150,12 @@ activationForm.addEventListener("submit", async (event) => {
       Accept: "application/json",
       "Content-Type": "application/json",
       "Idempotency-Key": crypto.randomUUID(),
-      ...(await authorizationHeaders()),
+      ...(await authorizationHeaders(true)),
     };
     const response = await fetch(`${apiBase}${activationConfig.billing.checkoutSessionPath}`, {
       method: "POST",
       headers,
-      credentials: "include",
+      credentials: "omit",
       body: JSON.stringify({
         contract_version: "1.0.0",
         application_id: applicationId,
