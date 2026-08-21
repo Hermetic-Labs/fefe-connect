@@ -1,0 +1,21 @@
+.activation-card { min-height: 620px; }
+.activation-heading { margin-bottom: 1.1rem; padding-bottom: 1.5rem; display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; border-bottom: 1px solid var(--line); }
+.activation-heading h2, .activation-state h2 { margin: 0; font-family: Georgia, serif; font-size: clamp(1.9rem, 3vw, 2.7rem); font-weight: 500; line-height: 1.05; }
+.approval-chip { padding: 0.55rem 0.75rem; display: inline-flex; align-items: center; gap: 0.4rem; color: var(--green); background: var(--mint); font-size: 0.62rem; font-weight: 850; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+.approval-chip b { width: 18px; height: 18px; display: grid; place-items: center; color: white; background: var(--green); border-radius: 50%; }
+.activation-lede { margin: 0 0 1.6rem; color: var(--ink-soft); font-size: 0.8rem; line-height: 1.65; }
+.activation-plans { margin-top: 0; }
+.seat-note { margin: -0.7rem 0 1.2rem; padding: 0.85rem 1rem; color: var(--ink-soft); border-left: 3px solid var(--coral); background: #fffefa; font-size: 0.68rem; line-height: 1.55; }
+.seat-note strong { color: var(--ink); }
+.activation-consent { margin: 1.2rem 0; }
+.checkout-message { min-height: 1.2rem; margin: 0.8rem 0 0; color: #8b4a38; font-size: 0.66rem; font-weight: 750; line-height: 1.5; text-align: center; }
+.activation-state { padding: 3.5rem 1rem; text-align: center; }
+.activation-state[hidden] { display: none; }
+.activation-state > p:not(.section-kicker) { max-width: 500px; margin: 1rem auto 2rem; color: var(--ink-soft); font-size: 0.82rem; line-height: 1.7; }
+.activation-state .form-button { max-width: 350px; margin: 0 auto; }
+.status-mark { width: 58px; height: 58px; margin: 0 auto 1.5rem; display: grid; place-items: center; color: white; background: var(--green); border-radius: 50%; font-size: 1.25rem; }
+
+@media (max-width: 600px) {
+  .activation-heading { display: block; }
+  .approval-chip { margin-top: 1rem; }
+}

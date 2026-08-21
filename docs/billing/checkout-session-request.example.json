@@ -1,0 +1,7 @@
+{
+  "contract_version": "1.0.0",
+  "application_id": "00000000-0000-4000-8000-000000000201",
+  "plan_key": "individual_monthly",
+  "billing_disclosure_version": "2026-08-20",
+  "recurring_billing_accepted": true
+}

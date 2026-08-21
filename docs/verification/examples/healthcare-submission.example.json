@@ -1,0 +1,73 @@
+{
+  "payload_version": "1.2.0",
+  "track": "healthcare",
+  "applicant_id": "00000000-0000-4000-8000-000000000002",
+  "identity": {
+    "legal_name": {
+      "given": "Morgan",
+      "middle": "Example",
+      "family": "Clinician",
+      "suffix": null
+    },
+    "former_names": [],
+    "professional_email": "morgan@examplepractice.example",
+    "phone": "+1-404-555-0101",
+    "residence_country": "US",
+    "npi": "0000000000"
+  },
+  "licenses": [
+    {
+      "country_code": "US",
+      "subdivision_code": "US-GA",
+      "profession": "clinical_social_worker",
+      "license_type": "licensed_clinical_social_worker",
+      "license_number": "EXAMPLE-LICENSE",
+      "issued_date": "2020-01-15",
+      "expiration_date": "2028-09-30",
+      "claimed_status": "active",
+      "is_primary": true
+    }
+  ],
+  "practice": {
+    "legal_name": "Example Wellness LLC",
+    "display_name": "Example Wellness",
+    "entity_country_code": "US",
+    "entity_subdivision_code": "US-GA",
+    "entity_identifier": "EXAMPLE-CONTROL-NUMBER",
+    "organizational_npi": null,
+    "website": "https://examplepractice.example",
+    "office_address": {
+      "line_1": "200 Example Avenue",
+      "city": "Atlanta",
+      "subdivision_code": "US-GA",
+      "postal_code": "30303",
+      "country_code": "US"
+    },
+    "role": "owner",
+    "authorized_representative": null
+  },
+  "service_jurisdictions": [
+    {
+      "country_code": "US",
+      "subdivision_code": "US-GA",
+      "service_mode": "remote",
+      "lawful_service_attested": true
+    }
+  ],
+  "attestations": {
+    "information_accurate": true,
+    "primary_source_checks_authorized": true,
+    "material_changes_will_be_reported": true,
+    "no_patient_information_submitted": true,
+    "publication_rights_confirmed": true,
+    "terms_accepted": true,
+    "privacy_acknowledged": true,
+    "intended_use_accepted": true,
+    "verification_disclosure_acknowledged": true,
+    "terms_version": "2026-08-20",
+    "privacy_version": "2026-08-20",
+    "intended_use_version": "2026-08-20",
+    "verification_version": "2026-08-20",
+    "accepted_at": "2026-08-20T20:00:00Z"
+  }
+}

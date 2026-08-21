@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Activate an approved FEFE Connect membership through secure Stripe Checkout." />
+    <meta name="theme-color" content="#163f3a" />
+    <title>Activate your FEFE Connect membership</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="onboarding.css" />
+    <link rel="stylesheet" href="activation.css" />
+    <script src="site-config.js"></script>
+    <script src="app.js" defer></script>
+    <script src="activation.js" defer></script>
+  </head>
+  <body class="onboarding-body activation-body">
+    <a class="skip-link" href="#activation">Skip to activation</a>
+    <header class="onboarding-header">
+      <a class="brand" href="index.html"><img class="brand-logo" src="assets/fefe-logo.png" alt="FEFE Connect" /></a>
+      <a class="back-link" href="index.html">← Back to the welcome page</a>
+    </header>
+
+    <main class="onboarding-layout" id="activation">
+      <aside class="onboarding-aside">
+        <p class="eyebrow"><span></span> Approved-member activation</p>
+        <h1>Review first.<br /><i>Membership second.</i></h1>
+        <p>
+          FEFE does not charge application fees. After professional-record review and
+          approval, an applicant may activate a fixed monthly membership through Stripe.
+        </p>
+        <div class="assurance-list">
+          <p><b>✓</b><span><strong>Fixed membership</strong>No lead fee, success fee, or percentage of professional fees.</span></p>
+          <p><b>✓</b><span><strong>Stripe hosted</strong>FEFE does not receive or store full card numbers.</span></p>
+          <p><b>✓</b><span><strong>Cancel anytime</strong>The member billing portal stops future renewals.</span></p>
+        </div>
+      </aside>
+
+      <section class="application-card activation-card">
+        <div class="preview-banner" role="status" data-preview-banner>
+          <strong>Integration preview</strong> — the API connection is ready for server credentials and Stripe Price IDs.
+        </div>
+
+        <section class="activation-state" data-ineligible-state hidden tabindex="-1">
+          <span class="status-mark">⌛</span>
+          <p class="section-kicker">Private activation required</p>
+          <h2>Your application must be approved first.</h2>
+          <p>Approved applicants receive an authenticated activation link. A public URL or browser parameter cannot approve an application or unlock Checkout.</p>
+          <a class="form-button" href="onboarding.html">Begin a free application <span>→</span></a>
+        </section>
+
+        <section data-approved-state hidden>
+          <div class="activation-heading">
+            <div>
+              <p class="application-step">Application approved</p>
+              <h2>Activate your founding membership</h2>
+            </div>
+            <span class="approval-chip"><b>✓</b> Ready for Checkout</span>
+          </div>
+          <p class="activation-lede">Choose the membership you want Stripe to bill. Applying was free; your first charge occurs only after you review and complete Stripe Checkout.</p>
+
+          <form id="activation-form" novalidate>
+            <fieldset class="plan-picker activation-plans">
+              <legend>Monthly membership</legend>
+              <label>
+                <input type="radio" name="plan" value="individual_monthly" checked required />
+                <span><b>Individual</b><strong>$29<small>/month</small></strong><em>One reviewed professional profile</em></span>
+              </label>
+              <label>
+                <input type="radio" name="plan" value="organization_monthly" required />
+                <span><b>Organization</b><strong>$79<small>/month</small></strong><em>Organization page plus 3 verified seats</em></span>
+              </label>
+            </fieldset>
+
+            <div class="seat-note"><strong>Need more than three seats?</strong> Additional verified seats are $20/month each and can be added after activation.</div>
+
+            <input type="hidden" name="billingDisclosureVersion" value="2026-08-20" data-policy-version="billingDisclosure" />
+            <label class="consent billing-consent activation-consent">
+              <input type="checkbox" name="acceptRecurringBilling" required />
+              <span data-billing-disclosure>I authorize a recurring FEFE Connect Individual membership at $29 USD per month until canceled. Stripe Checkout will show the exact amount, taxes, and first charge date before I purchase.</span>
+            </label>
+
+            <button class="form-button" type="submit" data-checkout-button>
+              Continue to secure Stripe Checkout <span>→</span>
+            </button>
+            <p class="form-note">No lead fees. No success fees. No percentage of professional earnings. See the <a href="terms.html#subscriptions">subscription terms</a>.</p>
+            <p class="checkout-message" data-checkout-message role="status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="activation-state" data-processing-state hidden tabindex="-1">
+          <span class="status-mark">✓</span>
+          <p class="section-kicker">Checkout returned</p>
+          <h2>Payment confirmation is processing.</h2>
+          <p>FEFE activates membership only after the server verifies Stripe’s signed webhook. A success URL by itself never activates a profile.</p>
+          <a class="form-button" href="index.html">Return to FEFE Connect <span>→</span></a>
+        </section>
+      </section>
+    </main>
+
+    <footer class="onboarding-legal-footer">
+      <div><a href="legal.html">Legal center</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="intended-use.html">Intended use</a><a href="verification.html">Verification</a><a href="cookies.html">Cookies</a></div>
+      <p>© <span data-year></span> FEFE Connect · A service of ELEVATED PERSPECTIVES PSYCHOTHERAPY/LIFE COACHING LLC</p>
+    </footer>
+  </body>
+</html>

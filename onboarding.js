@@ -5,14 +5,21 @@ const stepNumber = document.querySelector("[data-step-number]");
 const stepTitle = document.querySelector("[data-step-title]");
 const progress = [...document.querySelectorAll(".progress span")];
 const roleInputs = [...document.querySelectorAll('input[name="role"]')];
+const planInputs = [...document.querySelectorAll('input[name="plan"]')];
 const successPanel = document.querySelector(".success-panel");
 const organizationLabel = document.querySelector("[data-organization-label]");
 const licenseLabel = document.querySelector("[data-license-label]");
+const activationPreview = document.querySelector("[data-activation-preview]");
 
 let currentStep = 1;
 
+document.querySelectorAll("[data-policy-version]").forEach((input) => {
+  const configuredVersion = config.policyVersions?.[input.dataset.policyVersion];
+  if (configuredVersion) input.value = configuredVersion;
+});
+
 const titles = {
-  1: "Choose your membership",
+  1: "Choose your path",
   2: "Confirm your standing",
   3: "Shape your profile",
 };
@@ -58,20 +65,13 @@ const requestedRole = new URLSearchParams(window.location.search).get("role");
 const initialRole = requestedRole === "mental-health" ? "mental-health" : "legal";
 const initialInput = roleInputs.find((input) => input.value === initialRole);
 if (initialInput) initialInput.checked = true;
+const requestedPlan = new URLSearchParams(window.location.search).get("plan");
+const initialPlan = planInputs.find((input) => input.value === requestedPlan);
+if (initialPlan) initialPlan.checked = true;
 updateRoleCopy();
 showStep(1, false);
 
 roleInputs.forEach((input) => input.addEventListener("change", updateRoleCopy));
-
-document.querySelector("[data-checkout]").addEventListener("click", () => {
-  const role = selectedRole();
-  const checkoutUrl = role === "legal" ? config.stripeCheckout?.legal : config.stripeCheckout?.mentalHealth;
-  if (checkoutUrl) {
-    window.location.assign(checkoutUrl);
-    return;
-  }
-  showStep(2);
-});
 
 document.querySelectorAll("[data-next]").forEach((button) => {
   button.addEventListener("click", () => {
@@ -88,6 +88,14 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   const activeStep = steps.find((step) => Number(step.dataset.step) === currentStep);
   if (!fieldsAreValid(activeStep)) return;
+  const selectedPlan = form.elements.plan?.value || "individual_monthly";
+  const activationParams = new URLSearchParams({
+    status: "approved",
+    application: "preview",
+    role: selectedRole(),
+    plan: selectedPlan,
+  });
+  activationPreview.href = `activation.html?${activationParams.toString()}`;
   form.hidden = true;
   document.querySelector(".application-head").hidden = true;
   successPanel.hidden = false;
