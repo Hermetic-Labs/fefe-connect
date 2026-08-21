@@ -1,5 +1,11 @@
 // Public configuration only. Never place Stripe secret keys or API credentials here.
 window.FEFE_CONFIG = {
+  auth: {
+    clientId: "",
+    authority: "",
+    knownAuthorities: [],
+    apiScope: "",
+  },
   billing: {
     checkoutSessionPath: "/v1/billing/checkout-sessions",
     portalSessionPath: "/v1/billing/portal-sessions",

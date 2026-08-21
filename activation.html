@@ -10,8 +10,9 @@
     <link rel="stylesheet" href="onboarding.css?v=20260820-ux1" />
     <link rel="stylesheet" href="activation.css" />
     <script src="site-config.js"></script>
+    <script src="assets/auth.bundle.js" defer></script>
     <script src="app.js" defer></script>
-    <script src="activation.js?v=20260820-ux1" defer></script>
+    <script src="activation.js?v=20260821-auth1" defer></script>
   </head>
   <body class="onboarding-body activation-body">
     <a class="skip-link" href="#activation">Skip to activation</a>
@@ -39,6 +40,15 @@
         <div class="preview-banner" role="status" data-preview-banner>
           <strong>Checkout preview</strong> — Stripe Checkout will open here after member services are connected. No charge can occur in this preview.
         </div>
+
+        <section class="activation-state" data-auth-state hidden tabindex="-1">
+          <span class="status-mark">↗</span>
+          <p class="section-kicker">Private member sign-in</p>
+          <h2>Sign in to confirm your approval.</h2>
+          <p>Your authenticated account is matched to FEFE’s server-side application record. A public link alone cannot unlock Checkout.</p>
+          <button class="form-button" type="button" data-sign-in-button>Sign in securely <span>→</span></button>
+          <p class="checkout-message" data-auth-message role="status" aria-live="polite"></p>
+        </section>
 
         <section class="activation-state" data-ineligible-state hidden tabindex="-1">
           <span class="status-mark">⌛</span>

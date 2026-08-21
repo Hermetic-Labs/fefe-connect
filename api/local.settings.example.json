@@ -1,0 +1,25 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AZURE_FUNCTIONS_ENVIRONMENT": "Development",
+    "FEFE_SITE_ORIGIN": "http://localhost:8080",
+    "APPLICATION_STORAGE_CONNECTION_STRING": "UseDevelopmentStorage=true",
+    "ENTRA_ISSUER": "",
+    "ENTRA_JWKS_URI": "",
+    "ENTRA_API_AUDIENCE": "",
+    "ENTRA_REQUIRED_SCOPE": "access_as_user",
+    "KEY_VAULT_URI": "",
+    "STRIPE_SECRET_NAME": "stripe-test-secret-key",
+    "STRIPE_WEBHOOK_SECRET_NAME": "stripe-test-webhook-secret",
+    "STRIPE_SECRET_KEY": "",
+    "STRIPE_WEBHOOK_SECRET": "",
+    "STRIPE_API_VERSION": "",
+    "STRIPE_PRICE_INDIVIDUAL_MONTHLY": "price_1U6jxsRzK8KdcdCbvtQTPHOo",
+    "STRIPE_PRICE_ORGANIZATION_MONTHLY": "price_1U6jyQRzK8KdcdCbAeHfPCTH",
+    "STRIPE_PRICE_ADDITIONAL_SEAT_MONTHLY": "price_1U6jz1RzK8KdcdCbpB8xCsBj",
+    "STRIPE_PORTAL_CONFIGURATION_ID": "bpc_1U6k1bRzK8KdcdCbkG0JtMUW",
+    "BILLING_DISCLOSURE_VERSION": "2026-08-20"
+  }
+}

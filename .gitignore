@@ -6,3 +6,7 @@ Thumbs.db
 .vscode/
 tmp/
 output/
+node_modules/
+dist/
+api/local.settings.json
+.azure/*/.env
