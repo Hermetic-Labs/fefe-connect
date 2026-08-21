@@ -8,7 +8,7 @@ This directory defines how FEFE Connect should check legal professionals, mental
 
 ## Operating context
 
-- Operating entity: **ELEVATED PERSPECTIVES PSYCHOTHERAPY/LIFE COACHING LLC**
+- Operating entity: **Elevated Perspectives Psychotherapy, LLC**
 - Domicile supplied by the owner: **Georgia, United States**
 - Intended market: global
 - Product name and pronunciation: **FEFE Connect**, spoken “Fee-Fee Connect”

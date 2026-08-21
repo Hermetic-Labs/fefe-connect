@@ -2,8 +2,8 @@
 .onboarding-header { width: min(1240px, calc(100% - 48px)); min-height: 82px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
 .back-link { font-size: 0.76rem; font-weight: 750; text-decoration: none; }
 .back-link:hover { color: var(--coral); }
-.onboarding-layout { width: min(1240px, calc(100% - 48px)); margin: 0 auto; padding: 65px 0 90px; display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); align-items: start; }
-.onboarding-aside { position: sticky; top: 45px; padding-top: 1.5rem; }
+.onboarding-layout { width: min(1240px, calc(100% - 48px)); margin: 0 auto; padding: 44px 0 90px; display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); align-items: start; }
+.onboarding-aside { position: sticky; top: 32px; padding-top: 1rem; }
 .onboarding-aside h1 { font-size: clamp(3.2rem, 5.2vw, 5rem); }
 .onboarding-aside > p:not(.eyebrow) { max-width: 500px; margin: 2rem 0; color: var(--ink-soft); line-height: 1.75; }
 .assurance-list { margin-top: 3rem; border-top: 1px solid var(--line); }
@@ -13,9 +13,9 @@
 .assurance-list span { color: var(--ink-soft); font-size: 0.7rem; line-height: 1.45; }
 .assurance-list strong { margin-bottom: 0.16rem; color: var(--ink); font-size: 0.76rem; }
 
-.application-card { min-height: 650px; padding: clamp(1.5rem, 4vw, 3.5rem); background: var(--paper); border: 1px solid rgba(23,51,47,0.11); box-shadow: var(--shadow); }
-.preview-banner { margin: calc(clamp(1.5rem, 4vw, 3.5rem) * -1) calc(clamp(1.5rem, 4vw, 3.5rem) * -1) 2.4rem; padding: 0.75rem 1.2rem; color: #6f4539; background: #f9ddd4; font-size: 0.68rem; line-height: 1.4; text-align: center; }
-.application-head { margin-bottom: 2.4rem; padding-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--line); }
+.application-card { min-height: 650px; padding: clamp(1.5rem, 3.3vw, 3rem); background: var(--paper); border: 1px solid rgba(23,51,47,0.11); box-shadow: var(--shadow); }
+.preview-banner { margin: calc(clamp(1.5rem, 3.3vw, 3rem) * -1) calc(clamp(1.5rem, 3.3vw, 3rem) * -1) 1.8rem; padding: 0.75rem 1.2rem; color: #6f4539; background: #f9ddd4; font-size: 0.68rem; line-height: 1.4; text-align: center; }
+.application-head { margin-bottom: 1.8rem; padding-bottom: 1.2rem; display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--line); }
 .application-step { margin: 0 0 0.4rem; color: var(--coral); font-size: 0.65rem; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; }
 .application-head h2, .success-panel h2 { margin: 0; font-family: Georgia, serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 500; }
 .progress { display: flex; gap: 5px; }
@@ -27,17 +27,17 @@ legend { margin-bottom: 0.9rem; font-size: 0.75rem; font-weight: 800; }
 .role-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
 .role-picker label { position: relative; cursor: pointer; }
 .role-picker input { position: absolute; opacity: 0; }
-.role-picker label > span { min-height: 112px; padding: 1.1rem; display: flex; flex-direction: column; justify-content: center; border: 1px solid var(--line); transition: border 140ms ease, background 140ms ease; }
+.role-picker label > span { min-height: 96px; padding: 1rem; display: flex; flex-direction: column; justify-content: center; border: 1px solid var(--line); transition: border 140ms ease, background 140ms ease; }
 .role-picker input:checked + span { border-color: var(--green); background: var(--mint); box-shadow: inset 0 0 0 1px var(--green); }
 .role-picker input:focus-visible + span { outline: 3px solid rgba(233,120,85,0.38); outline-offset: 2px; }
 .role-picker b, .role-picker small { display: block; }
 .role-picker b { margin-bottom: 0.4rem; font-family: Georgia, serif; font-size: 1.05rem; }
 .role-picker small { color: var(--ink-soft); font-size: 0.65rem; line-height: 1.45; }
-.plan-picker { margin: 1.5rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+.plan-picker { margin: 1.15rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
 .plan-picker legend { grid-column: 1 / -1; }
 .plan-picker label { position: relative; cursor: pointer; }
 .plan-picker input { position: absolute; opacity: 0; }
-.plan-picker label > span { min-height: 136px; padding: 1rem; display: grid; align-content: start; gap: 0.25rem; border: 1px solid var(--line); background: #f3eee4; }
+.plan-picker label > span { min-height: 116px; padding: 0.9rem 1rem; display: grid; align-content: start; gap: 0.25rem; border: 1px solid var(--line); background: #f3eee4; }
 .plan-picker input:checked + span { border-color: var(--green); background: var(--mint); box-shadow: inset 0 0 0 1px var(--green); }
 .plan-picker input:focus-visible + span { outline: 3px solid rgba(233,120,85,0.38); outline-offset: 2px; }
 .plan-picker b { color: var(--coral); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; }
@@ -90,7 +90,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--coral); out
 .policy-page section p { color: var(--ink-soft); line-height: 1.8; }
 
 @media (max-width: 900px) {
-  .onboarding-layout { grid-template-columns: 1fr; }
+  .onboarding-layout { grid-template-columns: 1fr; gap: 1.5rem; }
   .onboarding-aside { position: static; }
   .assurance-list { display: none; }
 }
@@ -100,7 +100,16 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--coral); out
   .onboarding-header { min-height: 72px; }
   .back-link { font-size: 0; }
   .back-link::after { content: "← Back"; font-size: 0.72rem; }
-  .onboarding-layout { padding-top: 38px; gap: 2rem; }
+  .onboarding-layout { padding: 24px 0 64px; gap: 1.2rem; }
+  .onboarding-aside { padding-top: 0; }
+  .onboarding-aside .eyebrow { margin-bottom: 0.85rem; }
+  .onboarding-aside h1 { font-size: clamp(2.6rem, 12vw, 3.4rem); line-height: 0.96; }
+  .onboarding-aside > p:not(.eyebrow) { display: none; }
+  .application-card { min-height: 0; padding: 1.2rem; }
+  .preview-banner { margin: -1.2rem -1.2rem 1.35rem; padding: 0.72rem 1rem; }
+  .application-head { margin-bottom: 1.35rem; padding-bottom: 1rem; }
+  .application-head h2 { font-size: 1.65rem; }
+  .role-picker label > span, .plan-picker label > span { min-height: auto; }
   .role-picker, .plan-picker, .field-grid { grid-template-columns: 1fr; }
   .full-field { grid-column: auto; }
   .application-head { align-items: flex-start; }

@@ -58,7 +58,7 @@ async function loadApplicationStatus() {
   }
 
   if (previewApproved && !apiBase) {
-    previewBanner.innerHTML = "<strong>Approved-flow preview</strong> — no charge will occur until the Azure API and Stripe account are connected.";
+    previewBanner.innerHTML = "<strong>Checkout preview</strong> — Stripe Checkout will open here after member services are connected. No charge can occur in this preview.";
     showOnly(approvedState);
     return;
   }
