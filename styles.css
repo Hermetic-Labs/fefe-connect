@@ -61,6 +61,12 @@ a { color: inherit; }
 
 .brand em { color: var(--coral); font-style: normal; font-weight: 650; }
 
+.brand-logo {
+  width: clamp(175px, 18vw, 220px);
+  height: auto;
+  display: block;
+}
+
 .brand-mark {
   width: 37px;
   height: 37px;
@@ -357,7 +363,7 @@ blockquote cite { margin-top: 0.6rem; display: block; color: var(--ink-soft); fo
 .button-outline-light { color: white; border-color: white; }
 
 footer { padding: 3rem max(24px, calc((100% - 1180px) / 2)); display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; color: white; background: var(--green); border-top: 1px solid rgba(255,255,255,0.16); }
-.footer-brand { color: white; }
+.footer-brand { padding: 0.55rem 0.8rem; color: white; background: var(--cream); border-radius: 4px; }
 footer p { margin: 0; color: rgba(255,255,255,0.62); font-family: Georgia, serif; }
 footer div { display: flex; gap: 1.3rem; }
 footer div a { font-size: 0.75rem; font-weight: 750; text-decoration: none; }
