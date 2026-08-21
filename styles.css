@@ -110,6 +110,76 @@ nav a:not(.nav-action):hover { color: var(--coral); }
   align-items: center;
 }
 
+.explainer-player {
+  width: min(100%, 405px);
+  margin: 0 0 1.4rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.explainer-control {
+  position: relative;
+  flex: 0 0 54px;
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  color: white;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 10px 24px rgba(22, 63, 58, 0.2);
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.explainer-control::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border: 1px solid rgba(22, 63, 58, 0.42);
+  border-radius: 50%;
+  animation: explainer-pulse 2.1s ease-out infinite;
+}
+
+.explainer-icon {
+  margin-left: 3px;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.explainer-player:hover .explainer-control,
+.explainer-player:focus-visible .explainer-control {
+  background: var(--coral);
+  transform: scale(1.04);
+}
+
+.explainer-player:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 7px;
+  border-radius: 4px;
+}
+
+.explainer-player.is-playing .explainer-control::before { animation: none; opacity: 0; }
+.explainer-player.is-playing .explainer-icon { margin-left: 0; letter-spacing: -0.12em; }
+
+.explainer-copy { min-width: 0; display: grid; gap: 0.12rem; }
+.explainer-kicker { color: var(--coral); font-size: 0.64rem; font-weight: 850; letter-spacing: 0.15em; text-transform: uppercase; }
+.explainer-copy strong { font-family: Georgia, "Times New Roman", serif; font-size: 1rem; font-weight: 600; }
+.explainer-status { color: var(--ink-soft); font-size: 0.72rem; }
+.explainer-progress { width: min(210px, 48vw); height: 2px; margin-top: 0.28rem; overflow: hidden; background: rgba(22, 63, 58, 0.17); border-radius: 999px; }
+.explainer-progress span { width: var(--audio-progress); height: 100%; display: block; background: var(--coral); transition: width 180ms linear; }
+
+@keyframes explainer-pulse {
+  0% { opacity: 0.78; transform: scale(0.86); }
+  72%, 100% { opacity: 0; transform: scale(1.34); }
+}
+
 .eyebrow {
   margin: 0 0 1.5rem;
   display: flex;
@@ -367,6 +437,7 @@ footer { padding: 3rem max(24px, calc((100% - 1180px) / 2)); display: grid; grid
 footer p { margin: 0; color: rgba(255,255,255,0.62); font-family: Georgia, serif; }
 footer div { display: flex; gap: 1.3rem; }
 footer div a { font-size: 0.75rem; font-weight: 750; text-decoration: none; }
+.footer-operator { grid-column: 1 / -1; padding-top: 1rem; color: rgba(255,255,255,0.78); font-family: inherit; font-size: 0.68rem; font-weight: 750; letter-spacing: 0.08em; line-height: 1.55; text-transform: uppercase; }
 footer small { grid-column: 1 / -1; padding-top: 1.7rem; color: rgba(255,255,255,0.48); font-size: 0.62rem; }
 
 @media (max-width: 900px) {
@@ -376,6 +447,7 @@ footer small { grid-column: 1 / -1; padding-top: 1.7rem; color: rgba(255,255,255
   .menu-button span { width: 22px; height: 2px; background: var(--ink); }
   .hero { padding-top: 55px; grid-template-columns: 1fr; }
   .hero-copy { text-align: center; }
+  .explainer-player { margin-right: auto; margin-left: auto; justify-content: center; text-align: left; }
   .eyebrow, .hero-actions { align-items: center; justify-content: center; }
   .hero-lede { margin-left: auto; margin-right: auto; }
   .hero-scene { min-height: 470px; }
@@ -411,4 +483,5 @@ footer small { grid-column: 1 / -1; padding-top: 1.7rem; color: rgba(255,255,255
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; }
+  .explainer-control::before { animation: none; opacity: 0.45; }
 }

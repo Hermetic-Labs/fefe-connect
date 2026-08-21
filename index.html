@@ -41,6 +41,25 @@
     <main id="main">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
+          <button
+            class="explainer-player"
+            type="button"
+            aria-controls="explainer-audio"
+            aria-pressed="false"
+            aria-label="Play the Fe-Fe Connect audio explainer"
+            style="--audio-progress: 0%"
+          >
+            <span class="explainer-control" aria-hidden="true">
+              <span class="explainer-icon" data-player-icon>▶</span>
+            </span>
+            <span class="explainer-copy">
+              <span class="explainer-kicker">Listen first</span>
+              <strong data-player-title>Play the Fe-Fe Connect explainer</strong>
+              <span class="explainer-status" data-player-status>3 min 46 sec</span>
+              <span class="explainer-progress" aria-hidden="true"><span></span></span>
+            </span>
+          </button>
+          <audio id="explainer-audio" preload="metadata" src="assets/fefe-connect-explainer.mp3"></audio>
           <p class="eyebrow"><span></span> A private professional network</p>
           <h1 id="hero-title">Good people.<br /><i>Properly introduced.</i></h1>
           <p class="hero-lede">
@@ -231,6 +250,7 @@
       <a class="brand footer-brand" href="index.html"><img class="brand-logo" src="assets/fefe-logo.png" alt="FEFE Connect" /></a>
       <p>Firms &amp; Experts, Fully Evaluated.</p>
       <div><a href="mailto:hello@fefeconnect.com">Contact</a><a href="privacy.html">Privacy</a></div>
+      <p class="footer-operator">A service of ELEVATED PERSPECTIVES PSYCHOTHERAPY/LIFE COACHING LLC</p>
       <small>© <span data-year></span> FEFE Connect. A Hermetic Labs project.</small>
     </footer>
   </body>
