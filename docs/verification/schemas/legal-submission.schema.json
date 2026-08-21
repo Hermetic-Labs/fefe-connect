@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fefeconnect.com/schemas/legal-submission.schema.json",
+  "title": "FEFE Connect legal application submission",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "payload_version",
+    "track",
+    "applicant_id",
+    "identity",
+    "bar_admissions",
+    "firm",
+    "service_jurisdictions",
+    "attestations"
+  ],
+  "properties": {
+    "payload_version": { "const": "1.2.0" },
+    "track": { "const": "legal" },
+    "applicant_id": { "type": "string", "format": "uuid" },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["legal_name", "former_names", "professional_email", "phone", "residence_country"],
+      "properties": {
+        "legal_name": { "$ref": "#/$defs/personName" },
+        "former_names": {
+          "type": "array",
+          "maxItems": 10,
+          "items": { "$ref": "#/$defs/personName" }
+        },
+        "professional_email": { "type": "string", "format": "email", "maxLength": 320 },
+        "phone": { "type": "string", "minLength": 7, "maxLength": 30 },
+        "residence_country": { "$ref": "#/$defs/countryCode" }
+      }
+    },
+    "bar_admissions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "contains": {
+        "type": "object",
+        "properties": { "is_primary": { "const": true } },
+        "required": ["is_primary"]
+      },
+      "minContains": 1,
+      "maxContains": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["country_code", "authority_name", "bar_number", "is_primary"],
+        "properties": {
+          "country_code": { "$ref": "#/$defs/countryCode" },
+          "subdivision_code": { "$ref": "#/$defs/subdivisionCode" },
+          "authority_name": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "bar_number": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "admission_date": { "type": "string", "format": "date" },
+          "claimed_status": { "type": "string", "maxLength": 100 },
+          "is_primary": { "type": "boolean" }
+        }
+      }
+    },
+    "firm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "legal_name",
+        "entity_country_code",
+        "website",
+        "office_address",
+        "role",
+        "authorized_representative"
+      ],
+      "properties": {
+        "legal_name": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "display_name": { "type": "string", "maxLength": 300 },
+        "entity_country_code": { "$ref": "#/$defs/countryCode" },
+        "entity_subdivision_code": { "$ref": "#/$defs/subdivisionCode" },
+        "entity_identifier": { "type": "string", "maxLength": 200 },
+        "website": { "type": "string", "format": "uri", "pattern": "^https://", "maxLength": 2000 },
+        "office_address": { "$ref": "#/$defs/address" },
+        "role": { "$ref": "#/$defs/organizationRole" },
+        "authorized_representative": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/authorizedRepresentative" }
+          ]
+        }
+      }
+    },
+    "service_jurisdictions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 50,
+      "items": { "$ref": "#/$defs/serviceJurisdiction" }
+    },
+    "attestations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "information_accurate",
+        "primary_source_checks_authorized",
+        "material_changes_will_be_reported",
+        "publication_rights_confirmed",
+        "terms_accepted",
+        "privacy_acknowledged",
+        "intended_use_accepted",
+        "verification_disclosure_acknowledged",
+        "terms_version",
+        "privacy_version",
+        "intended_use_version",
+        "verification_version",
+        "accepted_at"
+      ],
+      "properties": {
+        "information_accurate": { "const": true },
+        "primary_source_checks_authorized": { "const": true },
+        "material_changes_will_be_reported": { "const": true },
+        "publication_rights_confirmed": { "const": true },
+        "terms_accepted": { "const": true },
+        "privacy_acknowledged": { "const": true },
+        "intended_use_accepted": { "const": true },
+        "verification_disclosure_acknowledged": { "const": true },
+        "terms_version": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "privacy_version": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "intended_use_version": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "verification_version": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "accepted_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "$defs": {
+    "countryCode": { "type": "string", "pattern": "^[A-Z]{2}$" },
+    "subdivisionCode": { "type": "string", "pattern": "^[A-Z]{2}-[A-Z0-9]{1,3}$" },
+    "personName": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["given", "family"],
+      "properties": {
+        "given": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "middle": { "type": ["string", "null"], "maxLength": 100 },
+        "family": { "type": "string", "minLength": 1, "maxLength": 150 },
+        "prefix": { "type": ["string", "null"], "maxLength": 30 },
+        "suffix": { "type": ["string", "null"], "maxLength": 30 }
+      }
+    },
+    "address": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["line_1", "city", "postal_code", "country_code"],
+      "properties": {
+        "line_1": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "line_2": { "type": ["string", "null"], "maxLength": 200 },
+        "city": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "subdivision_code": { "$ref": "#/$defs/subdivisionCode" },
+        "postal_code": { "type": "string", "minLength": 1, "maxLength": 30 },
+        "country_code": { "$ref": "#/$defs/countryCode" }
+      }
+    },
+    "organizationRole": {
+      "enum": ["owner", "partner", "associate", "employee", "contractor", "administrator", "other"]
+    },
+    "authorizedRepresentative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "professional_email"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "professional_email": { "type": "string", "format": "email", "maxLength": 320 },
+        "phone": { "type": "string", "minLength": 7, "maxLength": 30 }
+      }
+    },
+    "serviceJurisdiction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["country_code", "service_mode", "lawful_service_attested"],
+      "properties": {
+        "country_code": { "$ref": "#/$defs/countryCode" },
+        "subdivision_code": { "$ref": "#/$defs/subdivisionCode" },
+        "service_mode": { "enum": ["in_person", "remote", "referral_only"] },
+        "lawful_service_attested": { "const": true }
+      }
+    }
+  }
+}

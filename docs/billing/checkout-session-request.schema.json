@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fefeconnect.com/schemas/checkout-session-request.schema.json",
+  "title": "FEFE Connect approved-member Checkout request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "application_id",
+    "plan_key",
+    "billing_disclosure_version",
+    "recurring_billing_accepted"
+  ],
+  "properties": {
+    "contract_version": { "const": "1.0.0" },
+    "application_id": { "type": "string", "format": "uuid" },
+    "plan_key": {
+      "enum": ["individual_monthly", "organization_monthly"]
+    },
+    "billing_disclosure_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "recurring_billing_accepted": { "const": true }
+  }
+}
