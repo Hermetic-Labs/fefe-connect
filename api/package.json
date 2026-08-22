@@ -12,7 +12,7 @@
     "build:client": "esbuild client/auth.ts --bundle --format=iife --global-name=FEFEAuthBundle --outfile=../assets/auth.bundle.js --minify",
     "clean": "rimraf dist",
     "prestart": "npm run clean && npm run build",
-    "start": "func start",
+    "start": "func start --typescript",
     "test": "npm run clean && npm run build && node --test dist/test/**/*.test.js",
     "test:nppes:live": "tsx scripts/smoke-nppes.ts",
     "check": "npm run clean && npm run build && npm run build:client",

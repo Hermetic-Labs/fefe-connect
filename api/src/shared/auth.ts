@@ -4,6 +4,7 @@ import { HttpError } from "./errors";
 
 export interface AuthenticatedPrincipal {
   subject: string;
+  issuer: string;
   email?: string;
   name?: string;
   claims: Record<string, unknown>;
@@ -50,9 +51,12 @@ export async function authenticate(request: HttpRequest): Promise<AuthenticatedP
       throw new HttpError(403, "insufficient_scope", "This sign-in cannot access FEFE member services.");
     }
     const subject = firstString(result.payload.sub);
+    const issuer = firstString(result.payload.iss);
     if (!subject) throw new HttpError(401, "invalid_token", "The sign-in token has no stable subject.");
+    if (!issuer) throw new HttpError(401, "invalid_token", "The sign-in token has no issuer.");
     return {
       subject,
+      issuer,
       email: firstString(result.payload.emails) ?? firstString(result.payload.email) ?? firstString(result.payload.preferred_username),
       name: firstString(result.payload.name),
       claims: result.payload as Record<string, unknown>,

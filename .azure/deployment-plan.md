@@ -298,3 +298,13 @@ The public frontend remains fail-closed because `applicationApiBase` and the Ent
 - A signed-in test applicant can save and submit a fictional application, an authorized reviewer can record a reconstructable manual Georgia decision, and an approved applicant can receive one auditable pilot entitlement or enter Stripe sandbox Checkout.
 - An active verified test member can maintain a safe profile and discover another eligible member; cancellation, expiry, suspension, and account closure remove access correctly.
 - Builds, tests, security checks, Bicep validation, Azure preview, sandbox billing lifecycle, and browser acceptance tests pass before deployment status changes to validated.
+
+### Execution checkpoint — member data path prepared
+
+- Added private `profile-images`, `verification-evidence`, and `upload-quarantine` containers to Bicep with public access disabled.
+- Added accounts, identity links, consent events, profiles, organizations, memberships, reviews, verification results, pilot entitlements, and audit-event tables without changing existing billing tables.
+- Added scoped-token account bootstrap and versioned application submission endpoints. Submitted applications are immutable; identical retries are idempotent and changed retries fail closed.
+- Added strict allowlist validation for application fields, HTTPS-only professional websites, current policy versions, and all required attestations.
+- Connected onboarding to MSAL and the API when public identity settings are complete. Blank identity/API values preserve the current local preview and make no claim of secure submission.
+- Added member-services architecture and boundary documentation in `docs/member-services-foundation.md`.
+- Local TypeScript build, 19 contract tests, browser-client build, and Bicep compilation pass. Azure validation and deployment have not begun.

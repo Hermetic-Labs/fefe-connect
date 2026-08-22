@@ -92,6 +92,18 @@ module storage 'br/public:avm/res/storage/storage-account:0.8.3' = {
           name: deploymentStorageContainerName
           publicAccess: 'None'
         }
+        {
+          name: 'profile-images'
+          publicAccess: 'None'
+        }
+        {
+          name: 'verification-evidence'
+          publicAccess: 'None'
+        }
+        {
+          name: 'upload-quarantine'
+          publicAccess: 'None'
+        }
       ]
     }
   }

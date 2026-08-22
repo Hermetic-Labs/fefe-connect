@@ -15,6 +15,12 @@ export interface AppConfig {
   stripeApiVersion?: string;
   stripePortalConfigurationId?: string;
   billingDisclosureVersion: string;
+  policyVersions: {
+    terms: string;
+    privacy: string;
+    intended_use: string;
+    verification: string;
+  };
   stripePrices: Record<PublicPlanKey, string>;
 }
 
@@ -43,6 +49,12 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     stripeApiVersion: value(env, "STRIPE_API_VERSION"),
     stripePortalConfigurationId: value(env, "STRIPE_PORTAL_CONFIGURATION_ID"),
     billingDisclosureVersion: value(env, "BILLING_DISCLOSURE_VERSION") ?? "2026-08-20",
+    policyVersions: {
+      terms: value(env, "TERMS_VERSION") ?? "2026-08-20",
+      privacy: value(env, "PRIVACY_VERSION") ?? "2026-08-20",
+      intended_use: value(env, "INTENDED_USE_VERSION") ?? "2026-08-20",
+      verification: value(env, "VERIFICATION_VERSION") ?? "2026-08-20",
+    },
     stripePrices: {
       individual_monthly: value(env, "STRIPE_PRICE_INDIVIDUAL_MONTHLY") ?? "",
       organization_monthly: value(env, "STRIPE_PRICE_ORGANIZATION_MONTHLY") ?? "",

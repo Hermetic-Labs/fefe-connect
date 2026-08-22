@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="styles.css?v=20260821-copy1" />
     <link rel="stylesheet" href="onboarding.css?v=20260820-ux1" />
     <script src="site-config.js"></script>
+    <script src="assets/auth.bundle.js" defer></script>
     <script src="app.js" defer></script>
     <script src="onboarding.js" defer></script>
   </head>
@@ -35,7 +36,7 @@
       </aside>
 
       <section class="application-card">
-        <div class="preview-banner" role="status">
+        <div class="preview-banner" role="status" data-service-banner>
           <strong>Application preview</strong> — your information stays in this browser today. Secure submission will open when member services are connected. No payment is collected during review.
         </div>
         <div class="application-head">
@@ -114,7 +115,7 @@
           <span class="success-mark">✓</span>
           <p class="section-kicker">Application submitted</p>
           <h2>Your review comes first.</h2>
-          <p>
+          <p data-success-copy>
             No payment has been collected. Once the secure member service is connected,
             FEFE will review the application and send approved applicants a private link
             to activate membership through Stripe Checkout.

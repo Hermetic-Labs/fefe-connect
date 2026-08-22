@@ -1,9 +1,10 @@
-import { app } from "@azure/functions";
+import { app, type HttpRequest, type InvocationContext } from "@azure/functions";
 import { authenticate } from "../shared/auth";
 import { eligibleApplicationStatuses, isUuid } from "../shared/domain";
 import { HttpError } from "../shared/errors";
 import { handled, jsonResponse, preflight } from "../shared/http";
-import { getApplication } from "../shared/storage";
+import { getApplication, getOrCreateAccount } from "../shared/storage";
+import { submitApplicationHandler } from "./submit-application";
 
 export const getApplicationHandler = handled(async (request, _context, id) => {
   const options = preflight(request);
@@ -14,7 +15,8 @@ export const getApplicationHandler = handled(async (request, _context, id) => {
     throw new HttpError(400, "invalid_application", "A valid application ID is required.");
   }
   const application = await getApplication(applicationId);
-  if (!application || application.ownerSubject !== principal.subject) {
+  const account = await getOrCreateAccount(principal.subject, principal.issuer, principal.email, principal.name);
+  if (!application || application.ownerAccountId !== account.accountId) {
     throw new HttpError(404, "application_not_found", "The application could not be found.");
   }
   return jsonResponse(request, 200, {
@@ -30,9 +32,12 @@ export const getApplicationHandler = handled(async (request, _context, id) => {
   }, id);
 });
 
-app.http("getApplication", {
-  methods: ["GET", "OPTIONS"],
+const applicationRouteHandler = (request: HttpRequest, context: InvocationContext) =>
+  request.method === "PUT" ? submitApplicationHandler(request, context) : getApplicationHandler(request, context);
+
+app.http("application", {
+  methods: ["GET", "PUT", "OPTIONS"],
   authLevel: "anonymous",
   route: "v1/applications/{id}",
-  handler: getApplicationHandler,
+  handler: applicationRouteHandler,
 });

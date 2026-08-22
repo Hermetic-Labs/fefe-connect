@@ -32,6 +32,7 @@ var appSettings = {
   AzureWebJobsStorage__credential: 'managedidentity'
   AzureWebJobsStorage__clientId: identityClientId
   APPLICATION_STORAGE__tableServiceUri: storageAccount.properties.primaryEndpoints.table
+  APPLICATION_STORAGE__blobServiceUri: storageAccount.properties.primaryEndpoints.blob
   APPLICATION_STORAGE__credential: 'managedidentity'
   APPLICATION_STORAGE__clientId: identityClientId
   APPLICATIONINSIGHTS_AUTHENTICATION_STRING: applicationInsightsIdentity
@@ -52,6 +53,10 @@ var appSettings = {
   STRIPE_PRICE_ADDITIONAL_SEAT_MONTHLY: 'price_1U7ADaPZ0YIlyfF914wjfpkr'
   STRIPE_PORTAL_CONFIGURATION_ID: 'bpc_1U7AFMPZ0YIlyfF9h0u7OXr1'
   BILLING_DISCLOSURE_VERSION: '2026-08-20'
+  TERMS_VERSION: '2026-08-20'
+  PRIVACY_VERSION: '2026-08-20'
+  INTENDED_USE_VERSION: '2026-08-20'
+  VERIFICATION_VERSION: '2026-08-20'
 }
 
 module api 'br/public:avm/res/web/site:0.15.1' = {

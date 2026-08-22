@@ -22,7 +22,7 @@ function corsHeaders(request: HttpRequest): Record<string, string> {
   return {
     "Access-Control-Allow-Origin": origin,
     "Access-Control-Allow-Headers": "Authorization, Content-Type, Idempotency-Key, X-MS-Client-Request-ID",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, OPTIONS",
     "Access-Control-Max-Age": "600",
     Vary: "Origin",
   };
