@@ -1,8 +1,8 @@
 # FEFE Connect member-services foundation
 
-**Status:** Prepared in source; identity values remain intentionally blank and no production member submission is enabled.
+**Status:** Identity resources, server configuration, private storage, and application routes are deployed; public configuration publication and browser acceptance testing are pending.
 
-**Customer identity tenant:** FEFE Connect External ID (`0fc4c7bc-5996-4bd7-b9b1-efc085356de0`, `fefeconnect.onmicrosoft.com`). Administrator verification-method enrollment must complete before application registrations are created.
+**Customer identity tenant:** FEFE Connect External ID (`0fc4c7bc-5996-4bd7-b9b1-efc085356de0`, `fefeconnect.onmicrosoft.com`). SPA `5983c194-0f7d-4906-b31c-e6ae14a524fb` calls API `43c011d2-3e6f-4055-8d66-e6793d9b41d0` through the delegated `access_as_user` scope.
 
 ## Purpose
 
@@ -72,7 +72,7 @@ Unknown fields are rejected. This prevents patient, client, case, clinical, or p
 
 ## Not implemented in this slice
 
-- Customer Entra tenant and app-registration values
+- Completed browser acceptance testing for the customer Entra flow
 - Reviewer authentication and decisions
 - Direct uploads or image processing
 - Profile publication and member directory authorization

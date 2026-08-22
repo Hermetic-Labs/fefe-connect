@@ -1,6 +1,6 @@
 # FEFE Connect Azure deployment plan
 
-**Status:** Approved — member-services expansion in progress
+**Status:** Validated — Entra/member submission infrastructure (Stripe remains sandbox)
 **Prepared:** 2026-08-21
 **Deployment path:** Modernize the existing GitHub Pages application with a new Azure API
 **Azure target:** Hermetic Labs / Azure subscription 1 (`d1a68ed7-2983-4a86-ab0e-e56df9e2e325`) / East US
@@ -314,4 +314,37 @@ The public frontend remains fail-closed because `applicationApiBase` and the Ent
 - Created the dedicated `FEFE Connect` Microsoft Entra External ID tenant with tenant ID `0fc4c7bc-5996-4bd7-b9b1-efc085356de0` and initial domain `fefeconnect.onmicrosoft.com`.
 - Linked the tenant to Azure subscription 1 and `rg-fefeconnect-prod-eastus`; Hermetic Labs remains the workforce/operator tenant.
 - Confirmed the other accessible `WBG` / `worldbankgroup.onmicrosoft.com` workforce directory is unrelated. Made no changes to it and documented it in `docs/identity/tenant-inventory.md` for a later owner-led review.
-- Microsoft requires the founding administrator to enroll an additional verification method before entering the new customer tenant. SPA/API registration and user-flow work are paused at that security gate.
+- Microsoft required the founding administrator to enroll an additional verification method before entering the new customer tenant. That gate was subsequently completed before the registrations and user flow below were created.
+
+### Expansion validation proof — 2026-08-22
+
+The administrator security gate was completed and the dedicated FEFE customer tenant was accessed through Microsoft Graph. Separate SPA and protected API registrations, service principals, a single delegated `access_as_user` scope, preauthorization, and an application-linked email/password sign-up/sign-in flow were created. The public SPA has no client secret.
+
+| Check | Evidence | Result |
+|---|---|---|
+| External tenant boundary | Microsoft Graph organization and application inventory in tenant `0fc4c7bc-5996-4bd7-b9b1-efc085356de0` | Passed — FEFE tenant confirmed; no WBG or workforce tenant changes |
+| SPA/API registration | SPA `5983c194-0f7d-4906-b31c-e6ae14a524fb`; API `43c011d2-3e6f-4055-8d66-e6793d9b41d0`; delegated `access_as_user` scope | Passed |
+| Customer user flow | `FEFE Connect Sign Up and Sign In` (`4e41e907-0140-403c-ae84-d4e6e56837fd`) associated with the SPA | Passed |
+| Tenant security posture | Attempted app-specific MFA policy creation | Security Defaults is enabled and prevented a parallel Conditional Access policy; defaults were not weakened or disabled |
+| AZD and authentication | `azd version`; `azd auth login --check-status`; `azd env get-values` | Passed — AZD 1.31.2, approved subscription/East US, Entra issuer/JWKS/audience populated |
+| Azure preview | `azd provision --preview --no-prompt` | Passed — read-only preview completed in 37 seconds with no deletion or replacement |
+| Bicep | `az bicep build --file infra/main.bicep --stdout` | Passed |
+| Application build | `npm ci`; `npm run check` | Passed — API TypeScript and self-hosted MSAL client bundle compiled |
+| Automated tests | `npm test` | Passed — 19 tests, 0 failures |
+| Dependency audit | `npm audit --omit=dev` | Passed — 0 vulnerabilities |
+| Package | `azd package --no-prompt` | Passed — Function deployment artifact created |
+| Azure Policy | Subscription-scope assignment query | Passed — no assignments returned |
+| Static RBAC | Cross-checked Table, Blob, Key Vault, and monitoring operations against resource-scoped roles | Passed |
+
+This validation authorizes deployment of the prepared identity-aware Function configuration, private containers, and member/application tables. It does not authorize Stripe Live mode, public verified badges, or collection of clinical/client/case content. A real customer-token and browser submission test remains a post-deployment acceptance check.
+
+### Expansion deployment verification — 2026-08-22
+
+- `azd provision --no-prompt` completed successfully in the approved East US resource group.
+- `azd deploy --no-prompt` published the expanded Function package successfully.
+- The Function inventory now includes `bootstrapAccount` and the combined authenticated `application` GET/PUT route alongside the existing health, billing, portal, and Stripe webhook functions.
+- All 15 application/member/billing tables and the three private member-content containers are provisioned; public container access remains disabled.
+- The first post-deploy probe detected that the Entra AZD values were not mapped through `infra/main.parameters.json`. The parameter bridge was added, Bicep and the read-only Azure preview were rerun successfully, and configuration was reprovisioned.
+- The live Function now reports all three Entra trust settings configured. `GET /api/health` returns `200`; a protected application request without a bearer token returns `401 authentication_required` instead of the prior fail-closed configuration `503`.
+- Live role verification reconfirmed resource-scoped Key Vault Secrets User, Storage Blob Data Owner, Storage Table Data Contributor, and Monitoring Metrics Publisher assignments for the Function managed identity.
+- The final customer browser token and fictional application submission remain the acceptance test performed after the GitHub Pages identity configuration is published.

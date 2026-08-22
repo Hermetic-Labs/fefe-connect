@@ -13,9 +13,18 @@
 | Country/region | United States |
 | Azure subscription | Azure subscription 1 (`d1a68ed7-2983-4a86-ab0e-e56df9e2e325`) |
 | Resource group | `rg-fefeconnect-prod-eastus` |
-| Current gate | Founding administrator MFA-method enrollment required |
+| Current status | SPA, protected API, and customer sign-up/sign-in flow created; Azure trust configuration deployed; browser acceptance test pending |
 
-This is the customer identity boundary for public FEFE sign-up and sign-in. SPA and protected API registrations must be created here after the founding administrator completes the Microsoft verification-method enrollment.
+This is the customer identity boundary for public FEFE sign-up and sign-in. The following identity resources are registered in this tenant:
+
+| Resource | Identifier |
+|---|---|
+| FEFE Connect Web SPA | `5983c194-0f7d-4906-b31c-e6ae14a524fb` |
+| FEFE Connect API | `43c011d2-3e6f-4055-8d66-e6793d9b41d0` |
+| Delegated API scope | `api://43c011d2-3e6f-4055-8d66-e6793d9b41d0/access_as_user` |
+| Customer user flow | `FEFE Connect Sign Up and Sign In` (`4e41e907-0140-403c-ae84-d4e6e56837fd`) |
+
+The SPA is a public PKCE client and has no client secret. Its registered redirect pages are the production and local onboarding and activation pages. The API exposes only the delegated `access_as_user` scope and preauthorizes the FEFE SPA.
 
 ## Hermetic Labs workforce tenant
 
