@@ -73,6 +73,7 @@ Default is `unsupported`. A source does not become automatable merely because it
 - [Legal submission schema](schemas/legal-submission.schema.json) and [healthcare submission schema](schemas/healthcare-submission.schema.json) — machine-readable inbound API contracts.
 - [Normalized result schema](schemas/verification-result.schema.json) — machine-readable output contract for every adapter.
 - [Legal example](examples/legal-submission.example.json) and [healthcare example](examples/healthcare-submission.example.json) — fictional onboarding payloads.
+- [Verification test results](test-results.md) — repeatable schema checks, NPPES adapter coverage, and the live-source smoke-test boundary.
 
 ## Before production
 

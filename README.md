@@ -10,6 +10,7 @@ Serve the folder with any static file server and open `index.html`. No package i
 
 ## Connect the live services
 
+- Execute the phased [launch build plan](docs/build-plan.md) for the invitation-only Georgia pilot.
 - Set `applicationApiBase` in `site-config.js` after the authenticated Azure API is available.
 - Keep Stripe secret keys, webhook secrets, and Price IDs in the Azure service, never in this repository or browser configuration.
 - Have the server create Checkout Sessions only for authenticated, approved applications and map the browser's public plan key to a private Stripe Price ID.

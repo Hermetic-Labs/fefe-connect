@@ -1,6 +1,6 @@
 # FEFE Connect Azure deployment plan
 
-**Status:** Deployed — Azure and Stripe Test mode verified; customer Entra sign-in pending
+**Status:** Deployed — FEFE Stripe sandbox connected; customer Entra sign-in pending
 **Prepared:** 2026-08-21
 **Deployment path:** Modernize the existing GitHub Pages application with a new Azure API
 **Azure target:** Hermetic Labs / Azure subscription 1 (`d1a68ed7-2983-4a86-ab0e-e56df9e2e325`) / East US
@@ -230,6 +230,10 @@ Azure's Function remote builder continued to install deployment dependencies onl
 
 The preview proposed only these new resources in the dedicated resource group: Application Insights, Key Vault, Storage account, Flex Consumption plan, Function App, managed identity, Table Storage resources, role assignments, and the resource group itself. Those resources have now been deployed. Entra customer-tenant identifiers remain intentionally unset; protected endpoints fail closed until the customer identity registration is supplied. Stripe Live mode remains outside this approval.
 
+### Stripe sandbox configuration revalidation — 2026-08-22
+
+The dedicated FEFE Stripe sandbox identifiers were substituted in Bicep and the server configuration examples before revalidation. `azd auth login --check-status`, `azd env get-values`, `az bicep build --file infra/main.bicep --stdout`, and `azd provision --preview --no-prompt` passed against Azure subscription 1 in East US. The preview was read-only and no infrastructure changes were applied. `npm ci`, `npm run check`, `npm test`, and `npm audit --omit=dev` passed with six tests, zero failures, and zero production dependency vulnerabilities. A sequential `azd package --no-prompt` then succeeded. Static review reconfirmed resource-scoped Storage Blob Data Owner, Storage Table Data Contributor, Monitoring Metrics Publisher, and Key Vault Secrets User roles for the Function managed identity. Subscription-scope Azure Policy assignment discovery returned no assignments.
+
 ## 16. Deployment and Stripe Test verification
 
 Deployment completed on 2026-08-21 in `rg-fefeconnect-prod-eastus`.
@@ -245,10 +249,13 @@ Deployment completed on 2026-08-21 in `rg-fefeconnect-prod-eastus`.
 | CORS | `https://fefeconnect.com` | Production origin configured |
 | Stripe API version | `2026-07-29.dahlia` | Pinned to the Test webhook destination version |
 | Restricted-key boundary | Customers, Checkout Sessions, Customer Portal, and read-only Subscriptions | Required operations returned `200`; unrelated Balance access returned `403` |
-| Stripe destination | `FEFE Connect Azure subscriptions (Test)` | Active and listening to five lifecycle events |
+| Stripe account boundary | Dedicated FEFE sandbox `acct_1U7A81PZ0YIlyfF9` | Separate from Hermetic Labs and live mode |
+| Stripe destination | `FEFE Azure Billing Webhook` (`we_1U7AGiPZ0YIlyfF9siNazyDv`) | Active and listening to five lifecycle events |
 | Signed webhook | Unique signed Test payload | Azure returned `200` and recorded the receipt |
 | Replay handling | Same signed event delivered twice | Second response returned `duplicate: true` |
+| Hosted Checkout | Metadata-only sandbox customer and Individual test Price | Stripe created a `checkout.stripe.com` Session; no payment was submitted |
+| Customer Portal | Same sandbox customer and configured portal | Stripe created a `billing.stripe.com` Session |
 
-The active webhook event set is `checkout.session.completed`, `invoice.paid`, `invoice.payment_failed`, `customer.subscription.updated`, and `customer.subscription.deleted`. Stripe secrets were transferred directly from the authenticated dashboards into Key Vault and were not added to source files, shell history, documentation, or frontend assets.
+The active webhook event set is `checkout.session.completed`, `invoice.paid`, `invoice.payment_failed`, `customer.subscription.updated`, and `customer.subscription.deleted`. Stripe secrets were transferred directly from the authenticated dashboards into Key Vault and were not added to source files, shell history, documentation, or frontend assets. The 2026-08-22 recheck confirmed both secret versions are enabled, the Function identity retains its resource-scoped Key Vault, Storage, and monitoring roles, required Stripe operations succeed, and unrelated Balance access remains denied with `403`.
 
 The public frontend remains fail-closed because `applicationApiBase` and the Entra customer registration values are deliberately blank. This prevents a preview or unauthenticated browser from reaching billing. The remaining activation step is to create or select the customer-facing Entra External ID tenant and configure the SPA/API registrations, redirect URI, API scope, issuer, audience, and MFA policy before enabling the production API base in `site-config.js`.

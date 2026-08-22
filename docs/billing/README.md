@@ -1,6 +1,6 @@
 # FEFE Connect billing integration
 
-Status: implementation contract; Stripe test catalog and Customer Portal created; credentials and webhooks not yet connected
+Status: Stripe sandbox catalog, Customer Portal, restricted API key, and Azure webhook connected; live mode remains disabled
 
 Contract version: `1.0.0`
 
@@ -22,13 +22,15 @@ The three recurring monthly products are active in Stripe Test mode. These ident
 
 | Public plan key | Product ID | Price ID | Lookup key |
 |---|---|---|---|
-| `individual_monthly` | `prod_V6xt9tAyMvT6MY` | `price_1U6jxsRzK8KdcdCbvtQTPHOo` | `fefe_individual_monthly_v1` |
-| `organization_monthly` | `prod_V6xuW6tSzk7I1R` | `price_1U6jyQRzK8KdcdCbAeHfPCTH` | `fefe_organization_monthly_v1` |
-| `additional_seat_monthly` | `prod_V6xuUJJhepSkLW` | `price_1U6jz1RzK8KdcdCbpB8xCsBj` | `fefe_additional_seat_monthly_v1` |
+| `individual_monthly` | `prod_V7P0ex0CeICwsK` | `price_1U7ACvPZ0YIlyfF9ZJFREyID` | `fefe_individual_monthly_v1` |
+| `organization_monthly` | `prod_V7P1SHc7t2Mgv3` | `price_1U7ADHPZ0YIlyfF9IwhXV6iC` | `fefe_organization_monthly_v1` |
+| `additional_seat_monthly` | `prod_V7P1drGuLrKoDi` | `price_1U7ADaPZ0YIlyfF914wjfpkr` | `fefe_additional_seat_monthly_v1` |
 
 For local Azure-service testing, start with `service.env.test.example`. Supply the secret key and webhook signing secret through local secret storage or Azure Key Vault; never commit them.
 
-The Test-mode Customer Portal configuration is `bpc_1U6k1bRzK8KdcdCbkG0JtMUW`. It allows invoice history, billing-information and payment-method updates, and cancellation at the end of the billing period with a cancellation reason. Its return URL is `https://fefeconnect.com/`. Stripe public business information still needs the final Terms and Privacy URLs before live launch.
+The sandbox Customer Portal configuration is `bpc_1U7AFMPZ0YIlyfF9h0u7OXr1`. It allows invoice history, billing-information and payment-method updates, and cancellation at the end of the billing period with a cancellation reason. Its return URL is `https://fefeconnect.com/`. Stripe public business information still needs the final Terms and Privacy URLs before live launch.
+
+The dedicated FEFE sandbox account is `acct_1U7A81PZ0YIlyfF9`. The active Azure event destination is `we_1U7AGiPZ0YIlyfF9siNazyDv`; it sends only the five lifecycle events listed below to the Function App. The Azure service authenticates with a restricted test key limited to Customers write, Checkout Sessions write, Customer Portal write, and Subscriptions read. Secret values are stored only in Azure Key Vault.
 
 The browser may display these values, but it is not the billing authority. The API maps each stable public plan key to a private Stripe Price ID and rejects unknown, inactive, mismatched, or client-supplied amounts. Legal and mental-health applicants use the same catalog.
 
