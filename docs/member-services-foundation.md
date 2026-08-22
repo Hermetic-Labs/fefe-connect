@@ -2,6 +2,8 @@
 
 **Status:** Prepared in source; identity values remain intentionally blank and no production member submission is enabled.
 
+**Customer identity tenant:** FEFE Connect External ID (`0fc4c7bc-5996-4bd7-b9b1-efc085356de0`, `fefeconnect.onmicrosoft.com`). Administrator verification-method enrollment must complete before application registrations are created.
+
 ## Purpose
 
 This slice connects the public membership application to an authenticated, private Azure data path without changing FEFE's review or billing boundaries. A person must sign in through the configured Microsoft Entra customer flow before an application can leave the browser. Applying remains free. Submission never activates a membership and never starts Stripe Checkout.

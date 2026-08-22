@@ -308,3 +308,10 @@ The public frontend remains fail-closed because `applicationApiBase` and the Ent
 - Connected onboarding to MSAL and the API when public identity settings are complete. Blank identity/API values preserve the current local preview and make no claim of secure submission.
 - Added member-services architecture and boundary documentation in `docs/member-services-foundation.md`.
 - Local TypeScript build, 19 contract tests, browser-client build, and Bicep compilation pass. Azure validation and deployment have not begun.
+
+### Execution checkpoint — External ID tenant created
+
+- Created the dedicated `FEFE Connect` Microsoft Entra External ID tenant with tenant ID `0fc4c7bc-5996-4bd7-b9b1-efc085356de0` and initial domain `fefeconnect.onmicrosoft.com`.
+- Linked the tenant to Azure subscription 1 and `rg-fefeconnect-prod-eastus`; Hermetic Labs remains the workforce/operator tenant.
+- Confirmed the other accessible `WBG` / `worldbankgroup.onmicrosoft.com` workforce directory is unrelated. Made no changes to it and documented it in `docs/identity/tenant-inventory.md` for a later owner-led review.
+- Microsoft requires the founding administrator to enroll an additional verification method before entering the new customer tenant. SPA/API registration and user-flow work are paused at that security gate.
