@@ -1,6 +1,6 @@
 # FEFE Connect Azure deployment plan
 
-**Status:** Deployed — FEFE Stripe sandbox connected; customer Entra sign-in pending
+**Status:** Approved — member-services expansion in progress
 **Prepared:** 2026-08-21
 **Deployment path:** Modernize the existing GitHub Pages application with a new Azure API
 **Azure target:** Hermetic Labs / Azure subscription 1 (`d1a68ed7-2983-4a86-ab0e-e56df9e2e325`) / East US
@@ -259,3 +259,42 @@ Deployment completed on 2026-08-21 in `rg-fefeconnect-prod-eastus`.
 The active webhook event set is `checkout.session.completed`, `invoice.paid`, `invoice.payment_failed`, `customer.subscription.updated`, and `customer.subscription.deleted`. Stripe secrets were transferred directly from the authenticated dashboards into Key Vault and were not added to source files, shell history, documentation, or frontend assets. The 2026-08-22 recheck confirmed both secret versions are enabled, the Function identity retains its resource-scoped Key Vault, Storage, and monitoring roles, required Stripe operations succeed, and unrelated Balance access remains denied with `403`.
 
 The public frontend remains fail-closed because `applicationApiBase` and the Entra customer registration values are deliberately blank. This prevents a preview or unauthenticated browser from reaching billing. The remaining activation step is to create or select the customer-facing Entra External ID tenant and configure the SPA/API registrations, redirect URI, API scope, issuer, audience, and MFA policy before enabling the production API base in `site-config.js`.
+
+## 17. Approved member-services expansion — 2026-08-22
+
+**Approval evidence:** The owner approved the phased `docs/build-plan.md` and then directed, “let’s do it.”
+
+**Execution objective:** Complete the existing member-service foundation without replacing the public visual system. Preserve the working Stripe sandbox and deployed Azure Function while adding customer identity, persistent member/application data, private profile media, reviewer operations, profiles, directory access, organization membership, and the Founding Member Pilot entitlement.
+
+### Confirmed baseline
+
+- Azure Function, managed identity, Key Vault, Application Insights, Storage account, and five application/billing tables are deployed.
+- Existing Blob containers are Function system/deployment containers only; no profile or verification-evidence container exists.
+- The frontend MSAL adapter and server token validator exist, but the public client ID/authority/scope/API base and server issuer/JWKS/audience remain unset.
+- No FEFE app registration is visible in the current Hermetic Labs tenant. A second accessible tenant ID must be identified before customer app registrations are created.
+- The existing onboarding form is a browser-only preview and must remain fail-closed until authenticated submission and server-owned consent records are available.
+
+### Expansion work packages
+
+1. **Identity:** Identify/select the customer Entra External ID tenant; create separate SPA and protected API registrations; expose `access_as_user`; configure production/local redirect URIs, customer sign-up/sign-in, MFA, issuer/JWKS/audience, and least-privilege token validation. Create no client secret for the public SPA.
+2. **Storage:** Add private `profile-images`, `verification-evidence`, and `upload-quarantine` Blob containers; add accounts, identity links, consent events, profiles, organizations, memberships, reviews, verification results, pilot entitlements, and audit-event tables. Preserve the existing five tables.
+3. **API:** Implement authenticated account bootstrap, application create/save/submit/status, versioned consent events, profile create/edit/publish, organization membership, member directory, pilot entitlement, reviewer queue/decision, private upload authorization/finalization, and existing billing/portal integration. Unsupported jurisdictions and unauthorized roles fail closed.
+4. **Frontend:** Retain the current landing/legal pages and visual system; replace preview-only onboarding with authenticated save/resume/submit; add member dashboard, application status, profile editor, directory, organization seats, pilot/activation state, billing portal, and role-protected reviewer surface.
+5. **Safety:** Continue prohibiting patient/client/case/PHI/privileged content; keep evidence and original uploads private; validate file signatures and strip image metadata before publication; record append-only policy acceptances; never infer verification from identity, NPI, entity existence, or payment.
+6. **Verification and deployment:** Add deterministic auth/storage/API/browser tests, validate Bicep and RBAC, run Azure preview, update this plan to `Ready for Validation`, invoke `azure-validate`, then use `azure-deploy`. Keep Stripe in sandbox and do not enable live charges.
+
+### Architecture and deployment decisions
+
+- Continue with the existing Azure Functions Flex Consumption, Azure Table Storage, private Blob Storage, managed identity, Key Vault, Application Insights, Bicep, and `azd` composition.
+- Keep `fefeconnect.com` as the public GitHub Pages origin for this phase. The authenticated member frontend will initially use the same origin and API; `app.fefeconnect.com` and `api.fefeconnect.com` remain post-validation hostname steps.
+- Use FEFE-owned immutable account IDs with provider-neutral external identity links so Google can be added later without re-keying records.
+- Use the existing East US resource group and subscription. No new always-on compute, database service, public container, or live-payment environment is authorized.
+- Treat the second tenant as unconfirmed until its organization identity and External ID suitability are verified through an authenticated Microsoft session.
+
+### Exit criteria
+
+- Entra SPA/API registrations and MFA-enabled customer flow issue valid scoped tokens that the Function accepts and invalid tokens cannot cross account boundaries.
+- Private containers and new tables are provisioned with managed-identity access and no public access.
+- A signed-in test applicant can save and submit a fictional application, an authorized reviewer can record a reconstructable manual Georgia decision, and an approved applicant can receive one auditable pilot entitlement or enter Stripe sandbox Checkout.
+- An active verified test member can maintain a safe profile and discover another eligible member; cancellation, expiry, suspension, and account closure remove access correctly.
+- Builds, tests, security checks, Bicep validation, Azure preview, sandbox billing lifecycle, and browser acceptance tests pass before deployment status changes to validated.
