@@ -367,3 +367,14 @@ This validation authorizes deployment of the prepared identity-aware Function co
 - [x] Docker/Aspire — not applicable; the service is a Node.js Azure Function with explicit Bicep.
 
 Deployment scope is limited to Function application code plus the GitHub Pages source. Infrastructure provisioning is intentionally not applied because the preview contains unrelated module normalization and the required resources already exist. No Stripe setting, Entra registration, public-access control, reviewer decision, publication status, verified badge, or live charge is changed by this release.
+
+### Private profile customization deployment verification — 2026-10-04
+
+- `azd deploy api --no-prompt` completed successfully and reported `https://func-fefe-xmndxtdw.azurewebsites.net/`.
+- `GET https://func-fefe-xmndxtdw.azurewebsites.net/api/health` returned `200` with the minimal service health response.
+- Unauthenticated requests to both `/api/v1/me/profile` and `/api/v1/me/profile/photo` returned `401`, confirming the new routes fail closed.
+- Live RBAC verification for managed identity principal `5dfc72e9-f0b4-4107-acf9-7bcd795b0359` confirmed Storage Blob Data Owner and Storage Table Data Contributor on the FEFE storage account and Key Vault Secrets User on the FEFE vault.
+- GitHub Pages run `37192007535` published the final cache-busted frontend successfully from canonical `main`.
+- Signed-in browser acceptance loaded the private profile editor from the production API using the existing fictional mental-health application. The screen labels the record `Private · owner only`, exposes no publish action, and preserves the case/client/patient/privilege warning.
+- Responsive browser acceptance at a 767-pixel viewport measured a column footer with inner padding, all content inside its bounds, and no horizontal overflow. Privacy, Terms, Verification, Support, and the legal-operator line were visibly complete.
+- No profile edit or image was submitted during deployment acceptance, so the existing account record was not mutated merely to prove the screen.
