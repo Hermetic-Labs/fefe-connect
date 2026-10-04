@@ -1,0 +1,366 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fefeconnect.com/schemas/member-home-response.schema.json",
+  "title": "FEFE Connect signed-in home response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at", "account", "experience", "request_id"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "account": { "$ref": "#/$defs/account" },
+    "experience": { "$ref": "#/$defs/experience" },
+    "request_id": { "type": "string", "minLength": 1, "maxLength": 200 }
+  },
+  "$defs": {
+    "account": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["account_id", "status", "display_name", "email"],
+      "properties": {
+        "account_id": { "type": "string", "minLength": 20, "maxLength": 100 },
+        "status": { "enum": ["active", "suspended", "closed"] },
+        "display_name": { "type": ["string", "null"], "maxLength": 200 },
+        "email": { "type": ["string", "null"], "format": "email", "maxLength": 320 }
+      }
+    },
+    "experience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "professional_type",
+        "headline",
+        "summary",
+        "primary_status",
+        "primary_action",
+        "cards"
+      ],
+      "properties": {
+        "kind": {
+          "enum": ["no_application", "applicant", "approved_applicant", "member", "inactive_member"]
+        },
+        "professional_type": {
+          "type": ["string", "null"],
+          "enum": ["legal", "mental-health", null]
+        },
+        "headline": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "summary": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "primary_status": { "$ref": "#/$defs/primaryStatus" },
+        "primary_action": {
+          "oneOf": [
+            { "$ref": "#/$defs/action" },
+            { "type": "null" }
+          ]
+        },
+        "cards": {
+          "type": "array",
+          "maxItems": 12,
+          "items": {
+            "oneOf": [
+              { "$ref": "#/$defs/applicationStatusCard" },
+              { "$ref": "#/$defs/submittedProfileCard" },
+              { "$ref": "#/$defs/legalRecordSummaryCard" },
+              { "$ref": "#/$defs/mentalHealthRecordSummaryCard" },
+              { "$ref": "#/$defs/nextStepsCard" },
+              { "$ref": "#/$defs/supportCard" }
+            ]
+          }
+        }
+      }
+    },
+    "primaryStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "label", "tone", "updated_at"],
+      "properties": {
+        "code": {
+          "enum": [
+            "no_application",
+            "submitted",
+            "under_review",
+            "changes_requested",
+            "approved",
+            "activation_pending",
+            "active",
+            "declined",
+            "inactive",
+            "account_unavailable"
+          ]
+        },
+        "label": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "tone": { "enum": ["neutral", "progress", "action", "positive", "caution"] },
+        "updated_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action", "label", "target"],
+      "properties": {
+        "action": {
+          "enum": [
+            "start_application",
+            "view_application",
+            "view_professional_record",
+            "view_claim",
+            "report_change",
+            "request_correction",
+            "supply_requested_changes",
+            "contact_support"
+          ]
+        },
+        "label": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "pattern": "^(/[^\\s]*|mailto:hello@fefeconnect\\.com(?:\\?[^\\s]*)?)$"
+        },
+        "resource_id": { "type": "string", "minLength": 1, "maxLength": 200 }
+      }
+    },
+    "cardBase": {
+      "type": "object",
+      "required": ["card_id", "kind", "title", "summary", "state", "disclosure_level", "actions"],
+      "properties": {
+        "card_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{1,99}$" },
+        "kind": { "type": "string" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "summary": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "state": {
+          "enum": [
+            "empty",
+            "submitted",
+            "pending",
+            "action_required",
+            "complete",
+            "declined",
+            "unavailable",
+            "expired",
+            "inactive"
+          ]
+        },
+        "disclosure_level": { "enum": ["overview", "summary"] },
+        "actions": {
+          "type": "array",
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/action" }
+        }
+      }
+    },
+    "applicationStatusCard": {
+      "allOf": [
+        { "$ref": "#/$defs/cardBase" },
+        {
+          "type": "object",
+          "required": ["data"],
+          "properties": {
+            "kind": { "const": "application_status" },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["application_id", "professional_type", "status", "submitted_at", "updated_at"],
+              "properties": {
+                "application_id": { "type": ["string", "null"], "format": "uuid" },
+                "professional_type": {
+                  "type": ["string", "null"],
+                  "enum": ["legal", "mental-health", null]
+                },
+                "status": {
+                  "enum": [
+                    "none",
+                    "draft",
+                    "submitted",
+                    "under_review",
+                    "changes_requested",
+                    "approved",
+                    "activation_pending",
+                    "active",
+                    "declined",
+                    "inactive"
+                  ]
+                },
+                "submitted_at": { "type": ["string", "null"], "format": "date-time" },
+                "updated_at": { "type": ["string", "null"], "format": "date-time" }
+              }
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "submittedProfileCard": {
+      "allOf": [
+        { "$ref": "#/$defs/cardBase" },
+        {
+          "type": "object",
+          "required": ["data"],
+          "properties": {
+            "kind": { "const": "submitted_profile" },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["headline", "bio_excerpt", "specialties", "organization", "publication_state"],
+              "properties": {
+                "headline": { "type": ["string", "null"], "maxLength": 90 },
+                "bio_excerpt": { "type": ["string", "null"], "maxLength": 240 },
+                "specialties": {
+                  "type": "array",
+                  "maxItems": 12,
+                  "items": { "type": "string", "minLength": 1, "maxLength": 60 }
+                },
+                "organization": { "type": ["string", "null"], "maxLength": 160 },
+                "publication_state": { "enum": ["not_created", "submitted_only", "hidden", "published"] }
+              }
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "claimSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_id", "claim_type", "label", "status", "authority", "jurisdiction", "checked_at", "valid_through"],
+      "properties": {
+        "claim_id": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "claim_type": {
+          "enum": ["professional_standing", "entity_record", "organization_affiliation", "npi_record"]
+        },
+        "label": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "status": {
+          "enum": ["not_started", "in_review", "temporarily_unavailable", "verified", "not_verified", "expired"]
+        },
+        "authority": { "type": ["string", "null"], "maxLength": 300 },
+        "jurisdiction": { "type": ["string", "null"], "maxLength": 100 },
+        "masked_identifier": { "type": ["string", "null"], "maxLength": 100 },
+        "checked_at": { "type": ["string", "null"], "format": "date-time" },
+        "valid_through": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "legalRecordSummaryCard": {
+      "allOf": [
+        { "$ref": "#/$defs/cardBase" },
+        {
+          "type": "object",
+          "required": ["data"],
+          "properties": {
+            "kind": { "const": "legal_record_summary" },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["bar_admissions", "firm_entity", "firm_affiliation"],
+              "properties": {
+                "bar_admissions": {
+                  "type": "array",
+                  "maxItems": 20,
+                  "items": { "$ref": "#/$defs/claimSummary" }
+                },
+                "firm_entity": {
+                  "oneOf": [{ "$ref": "#/$defs/claimSummary" }, { "type": "null" }]
+                },
+                "firm_affiliation": {
+                  "oneOf": [{ "$ref": "#/$defs/claimSummary" }, { "type": "null" }]
+                }
+              }
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "mentalHealthRecordSummaryCard": {
+      "allOf": [
+        { "$ref": "#/$defs/cardBase" },
+        {
+          "type": "object",
+          "required": ["data"],
+          "properties": {
+            "kind": { "const": "mental_health_record_summary" },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["licenses", "npi_corroboration", "practice_entity", "practice_affiliation"],
+              "properties": {
+                "licenses": {
+                  "type": "array",
+                  "maxItems": 20,
+                  "items": { "$ref": "#/$defs/claimSummary" }
+                },
+                "npi_corroboration": {
+                  "oneOf": [{ "$ref": "#/$defs/claimSummary" }, { "type": "null" }]
+                },
+                "practice_entity": {
+                  "oneOf": [{ "$ref": "#/$defs/claimSummary" }, { "type": "null" }]
+                },
+                "practice_affiliation": {
+                  "oneOf": [{ "$ref": "#/$defs/claimSummary" }, { "type": "null" }]
+                }
+              }
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "nextStepsCard": {
+      "allOf": [
+        { "$ref": "#/$defs/cardBase" },
+        {
+          "type": "object",
+          "required": ["data"],
+          "properties": {
+            "kind": { "const": "next_steps" },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["items"],
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "maxItems": 8,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["step_id", "label", "state", "description"],
+                    "properties": {
+                      "step_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{1,99}$" },
+                      "label": { "type": "string", "minLength": 1, "maxLength": 120 },
+                      "state": { "enum": ["not_started", "current", "complete", "unavailable"] },
+                      "description": { "type": "string", "minLength": 1, "maxLength": 300 }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "supportCard": {
+      "allOf": [
+        { "$ref": "#/$defs/cardBase" },
+        {
+          "type": "object",
+          "required": ["data"],
+          "properties": {
+            "kind": { "const": "support" },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["contact_label", "contact_target", "privacy_reminder"],
+              "properties": {
+                "contact_label": { "type": "string", "minLength": 1, "maxLength": 100 },
+                "contact_target": { "type": "string", "minLength": 1, "maxLength": 500 },
+                "privacy_reminder": { "type": "string", "minLength": 1, "maxLength": 300 }
+              }
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}
