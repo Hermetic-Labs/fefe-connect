@@ -36,10 +36,12 @@ The included workflow publishes the static files from `main`. In the repository 
 
 - Responsive public landing page
 - Separate legal and mental-health membership entry points
-- Three-step free-application preview
+- Entra External ID sign-up/sign-in with a protected Azure API
+- Durable, versioned free applications and consent records
+- Signed-in My FEFE application status and private submitted-profile detail
 - Approved-member activation preview with fixed Individual and Organization pricing
 - Profile and professional-endorsement presentation
 - Privacy-first product principles
 - Static GitHub Pages publishing workflow
 
-Stripe billing, credential verification, member authentication, directory access, and persistent applications remain service integrations rather than browser-side code.
+Human review decisions, normalized professional-record presentation, live Stripe activation, profile publication, and directory access remain gated follow-on integrations. A signed-in or submitted account is not presented as an approved or verified member.
