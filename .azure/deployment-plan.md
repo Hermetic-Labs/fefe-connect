@@ -405,3 +405,11 @@ Deployment scope is limited to Function application code plus the GitHub Pages s
 - `npm test` passed 36 tests, `npm audit --omit=dev` found zero vulnerabilities, TypeScript/browser builds and JavaScript syntax checks passed, and `git diff --check` passed.
 - Bicep compiled, `azd provision --preview --no-prompt` completed in 20 seconds with no delete/replace action, and `azd package --no-prompt` succeeded. The preview again showed only known provider/module normalization on deployed services plus the additive table represented in source.
 - Deployment is limited to creating the `profilemedia` table through the authenticated data plane, deploying Function application code, and publishing the GitHub Pages source. The unrelated preview drift will not be applied.
+
+### Standardized profile media deployment verification — 2026-10-04
+
+- Created the additive private `profilemedia` table in the existing FEFE storage account; no new compute, public storage, identity, role assignment, or paid service was introduced.
+- `azd deploy api --no-prompt` completed successfully. The live health endpoint returned `200`; unauthenticated list and item-content requests both returned `401`.
+- GitHub Pages run `37194727252` published canonical commit `bc8ee9f`. Live DOM acceptance confirmed the five-item media panel, professional-history field, standardized-preview link, cache-busted script, and no horizontal overflow.
+- The owner-only standardized preview is live at `/profile-preview.html` and fails closed at its sign-in gate when no customer session is present.
+- Per the owner's explicit testing authorization, the single existing test profile was populated with clearly labeled sample history/training copy plus two already-public FEFE brand images: one private carousel draft and one private Highlight. No person-specific image, video, verified claim, or public profile was added.
