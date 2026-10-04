@@ -348,3 +348,22 @@ This validation authorizes deployment of the prepared identity-aware Function co
 - The live Function now reports all three Entra trust settings configured. `GET /api/health` returns `200`; a protected application request without a bearer token returns `401 authentication_required` instead of the prior fail-closed configuration `503`.
 - Live role verification reconfirmed resource-scoped Key Vault Secrets User, Storage Blob Data Owner, Storage Table Data Contributor, and Monitoring Metrics Publisher assignments for the Function managed identity.
 - The final customer browser token and fictional application submission remain the acceptance test performed after the GitHub Pages identity configuration is published.
+
+### Private profile customization validation — 2026-10-04
+
+**Status:** Validated for an application-only Function deployment. The public frontend remains on GitHub Pages.
+
+- [x] AZD installation — `azd version` returned 1.31.2 stable.
+- [x] Schema and environment — the existing `fefeconnect-prod` environment is selected with the previously approved Azure subscription 1 (`d1a68ed7-2983-4a86-ab0e-e56df9e2e325`) and East US resource group `rg-fefeconnect-prod-eastus`.
+- [x] Authentication — `azd auth login --check-status` confirmed the approved Hermetic Labs operator identity.
+- [x] Provision preview — `azd provision --preview --no-prompt` succeeded in 21 seconds with no deletion or replacement. It showed only provider/module normalization drift on existing resources; no infrastructure change is required for this release because the private containers, profile table, blob endpoint setting, and roles are already deployed.
+- [x] Bicep — `az bicep build --file infra/main.bicep --stdout` passed.
+- [x] Build — `npm run check` passed for TypeScript and browser authentication bundles.
+- [x] Automated tests — `npm test` passed 29 tests with zero failures, including strict profile-field validation, private publication state, and JPEG/PNG/WebP signature checks.
+- [x] Dependency audit — `npm audit --omit=dev` reported zero vulnerabilities.
+- [x] Package — `azd package --no-prompt` produced the Function artifact successfully.
+- [x] Azure Policy — the subscription-scope assignment query returned no assignments.
+- [x] Static RBAC — the Function user-assigned identity retains resource-scoped Storage Blob Data Owner, Storage Table Data Contributor, Key Vault Secrets User, and Monitoring Metrics Publisher roles. These cover private photo read/write, profile-table read/write, existing Stripe secret access, and telemetry.
+- [x] Docker/Aspire — not applicable; the service is a Node.js Azure Function with explicit Bicep.
+
+Deployment scope is limited to Function application code plus the GitHub Pages source. Infrastructure provisioning is intentionally not applied because the preview contains unrelated module normalization and the required resources already exist. No Stripe setting, Entra registration, public-access control, reviewer decision, publication status, verified badge, or live charge is changed by this release.
