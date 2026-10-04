@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "build:client": "esbuild client/auth.ts --bundle --format=iife --global-name=FEFEAuthBundle --outfile=../assets/auth.bundle.js --minify",
+    "build:client": "esbuild client/auth.ts --bundle --format=iife --global-name=FEFEAuthBundle --outfile=../assets/auth.bundle.js --minify && esbuild client/auth-redirect.ts --bundle --format=iife --global-name=FEFEAuthRedirectBundle --outfile=../assets/auth-redirect.bundle.js --minify",
     "clean": "rimraf dist",
     "prestart": "npm run clean && npm run build",
     "start": "func start --typescript",

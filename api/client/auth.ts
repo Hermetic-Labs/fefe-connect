@@ -34,12 +34,16 @@ const client = configured
         clientId: publicConfig.clientId!,
         authority: publicConfig.authority!,
         knownAuthorities: publicConfig.knownAuthorities ?? [],
-        redirectUri: `${window.location.origin}${window.location.pathname}`,
+        redirectUri: `${window.location.origin}/auth-redirect.html`,
         postLogoutRedirectUri: `${window.location.origin}/`,
         navigateToLoginRequestUrl: true,
       },
       cache: { cacheLocation: "sessionStorage" },
       system: {
+        // Account creation, email verification, and MFA routinely take longer than
+        // MSAL's one-minute popup default. Keep the popup alive while the dedicated
+        // redirect bridge waits for the customer to finish those steps.
+        popupBridgeTimeout: 600_000,
         loggerOptions: {
           piiLoggingEnabled: false,
           loggerCallback: (_level, message, containsPii) => {

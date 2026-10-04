@@ -24,7 +24,7 @@ This is the customer identity boundary for public FEFE sign-up and sign-in. The 
 | Delegated API scope | `api://43c011d2-3e6f-4055-8d66-e6793d9b41d0/access_as_user` |
 | Customer user flow | `FEFE Connect Sign Up and Sign In` (`4e41e907-0140-403c-ae84-d4e6e56837fd`) |
 
-The SPA is a public PKCE client and has no client secret. Its registered redirect pages are the production and local onboarding and activation pages. The API exposes only the delegated `access_as_user` scope and preauthorizes the FEFE SPA.
+The SPA is a public PKCE client and has no client secret. Popup authentication returns to the dedicated production bridge at `https://fefeconnect.com/auth-redirect.html`. This production SPA redirect was saved and observed in the FEFE tenant's app registration on 2026-10-04. The existing onboarding and activation redirect entries were retained. Local development would require separately registering `http://localhost:8080/auth-redirect.html`; that entry was not added during this production repair. The redirect page runs only the MSAL redirect bridge and does not render the application. The API exposes only the delegated `access_as_user` scope and preauthorizes the FEFE SPA.
 
 ## Hermetic Labs workforce tenant
 
