@@ -9,12 +9,12 @@
     <title>My FEFE — FEFE Connect</title>
     <link rel="stylesheet" href="styles.css?v=20261004-member1" />
     <link rel="stylesheet" href="account.css?v=20261004-member2" />
-    <link rel="stylesheet" href="member.css?v=20261004-footer2" />
+    <link rel="stylesheet" href="member.css?v=20261004-board1" />
     <script src="site-config.js"></script>
     <script src="assets/auth.bundle.js?v=20261004-account1" defer></script>
     <script src="app.js?v=20261004-brand1" defer></script>
     <script src="account.js?v=20261004-member2" defer></script>
-    <script src="member.js?v=20261004-profile1" defer></script>
+    <script src="member.js?v=20261004-board1" defer></script>
   </head>
   <body class="member-body">
     <a class="skip-link" href="#member-main">Skip to your FEFE record</a>
@@ -72,6 +72,52 @@
           </section>
           <p class="member-updated" data-member-updated></p>
           <section class="member-cards" aria-label="Your FEFE record" data-member-cards></section>
+
+          <section class="board-studio" data-board-studio hidden aria-labelledby="board-title">
+            <header class="board-header">
+              <div>
+                <p class="section-kicker">Member collaboration</p>
+                <h2 id="board-title">Collaboration board.</h2>
+                <p>Structured professional requests for referrals, consultation, training, compliance, and useful resources—without public comments or case discussion.</p>
+              </div>
+              <span class="profile-private-badge">Members only</span>
+            </header>
+
+            <div class="board-content">
+              <section aria-labelledby="open-requests-title">
+                <div class="board-section-heading">
+                  <div><p class="section-kicker">Open requests</p><h3 id="open-requests-title">See where you can help.</h3></div>
+                  <span data-board-count>0 open</span>
+                </div>
+                <div class="board-list" data-board-list></div>
+              </section>
+
+              <details class="board-compose">
+                <summary>Post a collaboration request <span aria-hidden="true">＋</span></summary>
+                <form data-board-form>
+                  <p class="board-boundary"><strong>Professional requests only.</strong> No client or patient names, case facts, privileged information, legal strategy, or clinical details. New requests stay private until reviewed.</p>
+                  <div class="profile-field-grid">
+                    <label class="profile-field"><span>Request type</span><select name="request_type"><option value="professional_consultation">Professional consultation</option><option value="referral_partner">Referral partner</option><option value="education_training">Education or training</option><option value="policy_compliance">Policy or compliance</option><option value="resource_exchange">Resource exchange</option></select></label>
+                    <label class="profile-field"><span>Who should see it?</span><select name="audience"><option value="either">Either profession</option><option value="legal">Legal professionals</option><option value="mental-health">Mental-health professionals</option></select></label>
+                  </div>
+                  <label class="profile-field"><span>Title</span><input name="title" minlength="10" maxlength="100" required placeholder="A clear, professional request" /></label>
+                  <label class="profile-field"><span>What are you looking for?</span><textarea name="summary" rows="5" minlength="30" maxlength="800" required placeholder="Describe the professional need in general terms. Keep people, matters, and care details out."></textarea><small><span data-board-summary-count>0</span>/800</small></label>
+                  <div class="profile-field-grid">
+                    <label class="profile-field"><span>Jurisdiction or region</span><input name="jurisdiction" maxlength="80" placeholder="Optional" /></label>
+                    <label class="profile-field"><span>Location</span><select name="location_mode"><option value="virtual">Virtual</option><option value="in_person">In person</option><option value="either">Either</option></select></label>
+                  </div>
+                  <label class="profile-field board-deadline"><span>Response deadline</span><input name="response_by" type="date" required /></label>
+                  <label class="board-attestation"><input name="no_sensitive_information" type="checkbox" required /> <span>I confirm this request contains no client, patient, case, privileged, or clinical information.</span></label>
+                  <div class="profile-form-actions"><button class="member-primary" type="submit" data-board-submit>Send for review <span aria-hidden="true">→</span></button><p class="profile-save-status" data-board-status role="status" aria-live="polite"></p></div>
+                </form>
+              </details>
+
+              <section class="board-mine" aria-labelledby="my-requests-title">
+                <div class="board-section-heading"><div><p class="section-kicker">Your requests</p><h3 id="my-requests-title">Submission status.</h3></div></div>
+                <div class="board-list" data-board-mine></div>
+              </section>
+            </div>
+          </section>
 
           <section class="profile-studio" data-profile-studio hidden aria-labelledby="profile-studio-title">
             <header class="profile-studio-header">

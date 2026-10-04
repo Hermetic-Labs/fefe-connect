@@ -85,3 +85,8 @@ resource auditEvents 'Microsoft.Storage/storageAccounts/tableServices/tables@202
   parent: tableService
   name: 'auditevents'
 }
+
+resource collaborationPosts 'Microsoft.Storage/storageAccounts/tableServices/tables@2023-05-01' = {
+  parent: tableService
+  name: 'collaborationposts'
+}

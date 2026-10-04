@@ -98,6 +98,36 @@
 .member-card-action { color: var(--green); font-weight: 800; }
 .member-privacy-note { margin: 1rem 0 0; color: var(--ink-soft); font-size: 0.82rem; line-height: 1.6; }
 
+.board-studio { margin-top: clamp(2.5rem, 6vw, 5rem); border: 1px solid var(--line); background: var(--paper); box-shadow: var(--shadow); }
+.board-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; padding: clamp(1.5rem, 5vw, 3rem); color: white; background: var(--green); }
+.board-header > div { max-width: 730px; }
+.board-header h2 { margin: 0.35rem 0 0.8rem; font-family: Georgia, serif; font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 500; line-height: 1; letter-spacing: -0.04em; }
+.board-header p:last-child { margin: 0; color: rgba(255,255,255,0.78); line-height: 1.7; }
+.board-header .section-kicker, .board-header .profile-private-badge { color: white; border-color: rgba(255,255,255,0.55); }
+.board-content { padding: clamp(1.5rem, 5vw, 3rem); }
+.board-section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; }
+.board-section-heading h3 { margin: 0.3rem 0 0; font-family: Georgia, serif; font-size: clamp(1.7rem, 3.5vw, 2.6rem); font-weight: 500; }
+.board-section-heading > span { color: var(--ink-soft); font-size: 0.75rem; font-weight: 800; }
+.board-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.board-card, .board-empty { min-width: 0; padding: 1.25rem; border: 1px solid var(--line); background: var(--cream); }
+.board-card-meta { margin: 0 0 0.55rem; color: var(--coral); font-size: 0.65rem; font-weight: 850; letter-spacing: 0.07em; text-transform: uppercase; }
+.board-card h4 { margin: 0; font-family: Georgia, serif; font-size: 1.4rem; font-weight: 500; overflow-wrap: anywhere; }
+.board-card-copy { margin: 0.65rem 0 1rem; color: var(--ink-soft); line-height: 1.6; white-space: pre-wrap; }
+.board-card-details { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.board-card-details span { padding: 0.3rem 0.5rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.68rem; }
+.board-card-details .board-own-marker { color: var(--green); background: var(--mint); font-weight: 850; text-transform: uppercase; }
+.board-empty { grid-column: 1 / -1; }
+.board-empty p { margin: 0.35rem 0 0; color: var(--ink-soft); line-height: 1.55; }
+.board-compose { margin-top: 2rem; border: 1px solid var(--line); }
+.board-compose > summary { padding: 1rem 1.2rem; display: flex; justify-content: space-between; gap: 1rem; color: var(--green); font-weight: 850; cursor: pointer; list-style: none; }
+.board-compose > summary::-webkit-details-marker { display: none; }
+.board-compose form { padding: 1.4rem; border-top: 1px solid var(--line); }
+.board-boundary { margin: 0 0 1.4rem; padding: 1rem; border-left: 4px solid var(--coral); color: var(--ink-soft); background: #fff2ec; line-height: 1.55; }
+.board-deadline { max-width: 320px; }
+.board-attestation { display: flex; align-items: flex-start; gap: 0.65rem; color: var(--ink-soft); font-size: 0.84rem; line-height: 1.5; }
+.board-attestation input { margin-top: 0.2rem; accent-color: var(--green); }
+.board-mine { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--line); }
+
 .profile-studio { margin-top: clamp(2.5rem, 6vw, 5rem); border: 1px solid var(--line); background: var(--paper); box-shadow: var(--shadow); }
 .profile-studio-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; padding: clamp(1.5rem, 5vw, 3rem); background: var(--cream); }
 .profile-studio-header > div { max-width: 720px; }
@@ -151,7 +181,8 @@
   .member-card-header { flex-direction: column; }
   .member-facts { grid-template-columns: 1fr; }
   .profile-studio-header { flex-direction: column; }
-  .profile-field-grid, .profile-mode-grid { grid-template-columns: 1fr; }
+  .board-header { flex-direction: column; }
+  .board-list, .profile-field-grid, .profile-mode-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 900px) {

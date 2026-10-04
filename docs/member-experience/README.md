@@ -6,7 +6,7 @@
 
 ## 1. Product truth at this boundary
 
-The deployed system can authenticate a customer, create an opaque FEFE account, accept a versioned application, store consent, return an owner-scoped My FEFE home, and save private professional profile drafts and owner-only draft photos. It does not yet make reviewer decisions, create verified profile records, publish profiles, list members, match professionals, send messages, or activate paid membership. The profile customization and photo security boundary is documented in [private-profile-customization.md](private-profile-customization.md).
+The deployed system can authenticate a customer, create an opaque FEFE account, accept a versioned application, store consent, return an owner-scoped My FEFE home, save private professional profile drafts and owner-only draft photos, and accept structured collaboration requests into private review. It does not yet make reviewer decisions, create verified profile records, publish profiles, list members, approve collaboration requests, connect professionals, send messages, or activate paid membership. The profile customization and photo security boundary is documented in [private-profile-customization.md](private-profile-customization.md); the collaboration boundary is documented in [collaboration-board.md](collaboration-board.md).
 
 The member experience must therefore begin as a private record of what FEFE actually knows. It must never imply that sign-in, payment, an NPI, an organization record, or a submitted application means that a professional has been approved or verified.
 

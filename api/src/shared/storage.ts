@@ -76,6 +76,26 @@ export interface ProfileEntity extends TableEntity {
   updatedAt: string;
 }
 
+export type CollaborationPostStatus = "pending_review" | "open" | "declined" | "closed" | "expired";
+
+export interface CollaborationPostEntity extends TableEntity {
+  postId: string;
+  ownerAccountId: string;
+  professionalType: "legal" | "mental-health";
+  status: CollaborationPostStatus;
+  requestType: string;
+  audience: "legal" | "mental-health" | "either";
+  title: string;
+  summary: string;
+  jurisdiction?: string;
+  locationMode: "virtual" | "in_person" | "either";
+  responseBy: string;
+  expiresAt: string;
+  sensitiveInformationAttested: true;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ConsentEventEntity extends TableEntity {
   applicationId: string;
   accountId: string;
@@ -147,6 +167,7 @@ const names = {
   verificationResults: "verificationresults",
   pilotEntitlements: "pilotentitlements",
   auditEvents: "auditevents",
+  collaborationPosts: "collaborationposts",
 } as const;
 
 const clients = new Map<string, TableClient>();
@@ -299,6 +320,28 @@ export async function saveProfilePhoto(accountId: string, professionalType: Prof
     createdAt: existing?.createdAt ?? values.photoUpdatedAt,
     updatedAt: values.photoUpdatedAt,
   } satisfies ProfileEntity, "Merge");
+}
+
+export async function saveCollaborationPost(entity: CollaborationPostEntity): Promise<void> {
+  await table(names.collaborationPosts).createEntity(entity);
+}
+
+export async function listCollaborationPostsForAccount(accountId: string): Promise<CollaborationPostEntity[]> {
+  const results: CollaborationPostEntity[] = [];
+  const entities = table(names.collaborationPosts).listEntities<CollaborationPostEntity>({
+    queryOptions: { filter: odata`ownerAccountId eq ${accountId}` },
+  });
+  for await (const entity of entities) results.push(entity);
+  return results;
+}
+
+export async function listOpenCollaborationPosts(): Promise<CollaborationPostEntity[]> {
+  const results: CollaborationPostEntity[] = [];
+  const entities = table(names.collaborationPosts).listEntities<CollaborationPostEntity>({
+    queryOptions: { filter: odata`status eq ${"open"}` },
+  });
+  for await (const entity of entities) results.push(entity);
+  return results;
 }
 
 export async function getBillingCustomer(ownerSubject: string): Promise<BillingCustomerEntity | undefined> {

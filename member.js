@@ -24,6 +24,14 @@
   const profileInitials = document.querySelector("[data-profile-initials]");
   const profilePhotoInput = document.querySelector("[data-profile-photo-input]");
   const profileFileName = document.querySelector("[data-profile-file-name]");
+  const boardStudio = document.querySelector("[data-board-studio]");
+  const boardList = document.querySelector("[data-board-list]");
+  const boardMine = document.querySelector("[data-board-mine]");
+  const boardCount = document.querySelector("[data-board-count]");
+  const boardForm = document.querySelector("[data-board-form]");
+  const boardSubmit = document.querySelector("[data-board-submit]");
+  const boardStatus = document.querySelector("[data-board-status]");
+  const boardSummaryCount = document.querySelector("[data-board-summary-count]");
   let selectedPhoto = null;
   let photoObjectUrl = "";
 
@@ -289,6 +297,72 @@
     }
   };
 
+  const boardLabels = {
+    professional_consultation: "Professional consultation",
+    referral_partner: "Referral partner",
+    education_training: "Education or training",
+    policy_compliance: "Policy or compliance",
+    resource_exchange: "Resource exchange",
+    legal: "Legal professionals",
+    "mental-health": "Mental-health professionals",
+    either: "Either profession",
+    virtual: "Virtual",
+    in_person: "In person",
+  };
+  const boardCard = (post) => {
+    const article = element("article", "board-card");
+    const meta = element("p", "board-card-meta", `${boardLabels[post.request_type] || readableStatus(post.request_type)} · ${boardLabels[post.audience] || readableStatus(post.audience)}`);
+    article.append(meta, element("h4", "", post.title), element("p", "board-card-copy", post.summary));
+    const details = element("div", "board-card-details");
+    details.append(
+      element("span", "", post.jurisdiction || "Any jurisdiction"),
+      element("span", "", boardLabels[post.location_mode] || readableStatus(post.location_mode)),
+      element("span", "", `Respond by ${formatDate(post.response_by)}`),
+    );
+    if (post.mine) details.append(element("span", "board-own-marker", readableStatus(post.status)));
+    article.append(details);
+    return article;
+  };
+  const boardEmpty = (copy) => {
+    const empty = element("div", "board-empty");
+    empty.append(element("strong", "", "Nothing here yet."), element("p", "", copy));
+    return empty;
+  };
+  const renderBoard = (body) => {
+    const open = body.board || [];
+    const mine = body.mine || [];
+    boardCount.textContent = `${open.length} open`;
+    boardList.replaceChildren(...(open.length ? open.map(boardCard) : [boardEmpty("Approved member requests will appear here. FEFE does not publish submissions before review.")]));
+    boardMine.replaceChildren(...(mine.length ? mine.map(boardCard) : [boardEmpty("When you submit a request, its review status will appear here.")]));
+    boardStudio.hidden = false;
+  };
+  const loadBoard = async (token) => {
+    boardStudio.hidden = false;
+    try {
+      const response = await fetch(`${apiBase}/v1/me/collaboration-posts`, { headers: authHeaders(token, { Accept: "application/json" }), credentials: "omit" });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(body.message || "The collaboration board could not be loaded.");
+      renderBoard(body);
+    } catch (error) {
+      boardCount.textContent = "Unavailable";
+      boardList.replaceChildren(boardEmpty(error?.message || "The collaboration board could not be loaded."));
+      boardMine.replaceChildren();
+    }
+  };
+
+  const configureBoardDates = () => {
+    const field = boardForm?.elements.namedItem("response_by");
+    if (!field) return;
+    const date = new Date();
+    const iso = (value) => value.toISOString().slice(0, 10);
+    const tomorrow = new Date(date); tomorrow.setDate(tomorrow.getDate() + 1);
+    const defaultDate = new Date(date); defaultDate.setDate(defaultDate.getDate() + 30);
+    const maximum = new Date(date); maximum.setDate(maximum.getDate() + 90);
+    field.min = iso(tomorrow);
+    field.max = iso(maximum);
+    field.value = iso(defaultDate);
+  };
+
   const load = async () => {
     show(loading);
     if (!apiBase || !window.FEFE_AUTH?.isConfigured?.()) {
@@ -316,9 +390,10 @@
       if (!response.ok) throw new Error(body.message || "Your FEFE record could not be loaded.");
       render(body);
       if (body.experience?.professional_type) {
-        await loadProfile(token);
+        await Promise.all([loadProfile(token), loadBoard(token)]);
       } else {
         profileStudio.hidden = true;
+        boardStudio.hidden = true;
       }
     } catch (error) {
       errorMessage.textContent = error?.message || "Your FEFE record could not be loaded. Please try again.";
@@ -417,7 +492,53 @@
     }
   });
 
+  boardForm?.elements.namedItem("summary")?.addEventListener("input", (event) => {
+    boardSummaryCount.textContent = String(event.target.value.length);
+  });
+
+  boardForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!boardForm.reportValidity()) return;
+    boardSubmit.disabled = true;
+    boardStatus.textContent = "Sending your request for review…";
+    boardStatus.dataset.tone = "neutral";
+    try {
+      const token = await window.FEFE_AUTH?.getAccessToken?.({ interactive: false });
+      if (!token) throw new Error("Your sign-in expired. Sign in again to continue.");
+      const field = (name) => boardForm.elements.namedItem(name);
+      const response = await fetch(`${apiBase}/v1/me/collaboration-posts`, {
+        method: "POST",
+        headers: authHeaders(token, { Accept: "application/json", "Content-Type": "application/json" }),
+        credentials: "omit",
+        body: JSON.stringify({
+          request_type: field("request_type").value,
+          audience: field("audience").value,
+          title: field("title").value,
+          summary: field("summary").value,
+          jurisdiction: field("jurisdiction").value,
+          location_mode: field("location_mode").value,
+          response_by: field("response_by").value,
+          no_sensitive_information: field("no_sensitive_information").checked,
+        }),
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(body.message || "The request could not be submitted.");
+      boardForm.reset();
+      configureBoardDates();
+      boardSummaryCount.textContent = "0";
+      boardStatus.textContent = "Request saved privately for review. It is not public.";
+      boardStatus.dataset.tone = "success";
+      await loadBoard(token);
+    } catch (error) {
+      boardStatus.textContent = error?.message || "The request could not be submitted.";
+      boardStatus.dataset.tone = "error";
+    } finally {
+      boardSubmit.disabled = false;
+    }
+  });
+
   retryButton?.addEventListener("click", load);
   window.addEventListener("fefe-auth-changed", load);
+  configureBoardDates();
   void load();
 })();
