@@ -1,0 +1,34 @@
+.account-bar {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: .82rem;
+}
+.account-status { margin: 0; min-width: 0; overflow-wrap: anywhere; line-height: 1.5; }
+.account-status strong { color: var(--ink); font-weight: 700; }
+.account-email, .account-error { display: block; font-size: .76rem; }
+.account-error { color: #9a352b; }
+.account-action {
+  flex-shrink: 0;
+  padding: 9px 18px;
+  border: 1px solid var(--green);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--green);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.account-action:hover { background: var(--mint); }
+.account-action:disabled { opacity: .6; cursor: wait; }
+.account-action:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+@media (max-width: 480px) {
+  .account-bar { width: calc(100% - 32px); gap: 10px; }
+  .account-action { padding: 9px 12px; }
+}

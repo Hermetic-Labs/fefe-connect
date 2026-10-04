@@ -64,7 +64,10 @@ async function initialize(): Promise<void> {
       const result = await client.handleRedirectPromise();
       if (result?.account) client.setActiveAccount(result.account);
       if (!client.getActiveAccount()) client.setActiveAccount(client.getAllAccounts()[0] ?? null);
-    })();
+    })().catch((error) => {
+      initialization = undefined;
+      throw error;
+    });
   }
   await initialization;
 }
@@ -82,6 +85,7 @@ async function signIn(): Promise<AccountInfo> {
   });
   if (!result.account) throw new Error("Sign-in completed without a member account.");
   client.setActiveAccount(result.account);
+  window.dispatchEvent(new CustomEvent("fefe-auth-changed"));
   return result.account;
 }
 
@@ -116,4 +120,4 @@ window.FEFE_AUTH = {
   getAccessToken,
 };
 
-initialize().finally(() => window.dispatchEvent(new CustomEvent("fefe-auth-ready")));
+initialize().catch(() => {}).finally(() => window.dispatchEvent(new CustomEvent("fefe-auth-ready")));
