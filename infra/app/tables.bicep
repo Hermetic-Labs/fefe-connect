@@ -90,3 +90,8 @@ resource collaborationPosts 'Microsoft.Storage/storageAccounts/tableServices/tab
   parent: tableService
   name: 'collaborationposts'
 }
+
+resource profileMedia 'Microsoft.Storage/storageAccounts/tableServices/tables@2023-05-01' = {
+  parent: tableService
+  name: 'profilemedia'
+}

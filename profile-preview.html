@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Preview your standardized FEFE Connect professional profile." />
+    <meta name="theme-color" content="#163f3a" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Profile Preview — FEFE Connect</title>
+    <link rel="stylesheet" href="styles.css?v=20261004-member1" />
+    <link rel="stylesheet" href="account.css?v=20261004-identity3" />
+    <link rel="stylesheet" href="member.css?v=20261004-media1" />
+    <script src="site-config.js"></script>
+    <script src="assets/auth.bundle.js?v=20261004-account1" defer></script>
+    <script src="app.js?v=20261004-brand1" defer></script>
+    <script src="account.js?v=20261004-identity3" defer></script>
+    <script src="profile-preview.js?v=20261004-media1" defer></script>
+  </head>
+  <body class="member-body preview-body">
+    <a class="skip-link" href="#preview-main">Skip to profile preview</a>
+    <header class="site-header member-header">
+      <a class="brand" href="index.html" aria-label="FEFE Connect home"><img class="brand-logo" src="assets/fefe-logo.png" alt="FEFE Connect" /></a>
+      <nav aria-label="Member navigation"><a href="index.html">Welcome</a><a href="my-fefe.html">My FEFE</a><a href="legal.html">Legal &amp; trust</a></nav>
+      <button class="menu-button" type="button" aria-expanded="false" aria-label="Open navigation"><span></span><span></span></button>
+    </header>
+
+    <main class="profile-preview" id="preview-main" data-preview-shell aria-busy="true">
+      <section class="member-loading" data-preview-loading><span class="member-spinner" aria-hidden="true"></span><p>Building your private profile preview…</p></section>
+      <section class="member-gate" data-preview-gate hidden><p class="section-kicker">Owner-only preview</p><h1>Sign in to preview your profile.</h1><p>This draft is visible only to you and is not a public listing.</p><button class="member-primary" type="button" data-preview-sign-in>Sign in securely <span aria-hidden="true">→</span></button></section>
+      <section class="member-error" data-preview-error hidden><p class="section-kicker">Preview unavailable</p><h1>Your profile preview could not be loaded.</h1><p data-preview-error-message>Please try again.</p><a class="member-secondary" href="my-fefe.html">Return to My FEFE</a></section>
+
+      <article data-preview-content hidden>
+        <aside class="preview-boundary"><strong>Private owner preview</strong><span>Standardized layout · media and claims are not published or independently verified.</span><a href="my-fefe.html">Edit profile</a></aside>
+        <section class="preview-carousel-section" data-preview-carousel-section hidden aria-labelledby="preview-carousel-title"><h2 class="sr-only" id="preview-carousel-title">Profile carousel</h2><div class="preview-carousel" data-preview-carousel></div></section>
+        <header class="preview-hero">
+          <div class="preview-avatar" data-preview-avatar><span data-preview-initials>FE</span></div>
+          <div><p class="section-kicker" data-preview-profession>Professional profile</p><h1 data-preview-name></h1><p data-preview-headline></p><div class="preview-pills"><span data-preview-availability></span><span>Private draft</span></div></div>
+        </header>
+
+        <div class="preview-sections">
+          <section class="preview-section"><p class="section-kicker">01 · Overview</p><h2>Professional introduction</h2><p class="preview-prose" data-preview-about>No introduction added yet.</p></section>
+          <section class="preview-section"><p class="section-kicker">02 · Credentials &amp; standing</p><h2>Submitted professional details</h2><dl class="member-facts" data-preview-credentials></dl><p class="preview-disclaimer">Submitted by the member. A checkmark or published verification claim appears only after FEFE’s review process.</p></section>
+          <section class="preview-section"><p class="section-kicker">03 · Professional history</p><h2>Experience</h2><p class="preview-prose" data-preview-history>No professional history added yet.</p><h3>Education &amp; training</h3><p class="preview-prose" data-preview-training>No education or training details added yet.</p></section>
+          <section class="preview-section"><p class="section-kicker">04 · Focus areas</p><h2>Areas of professional focus</h2><ul class="member-specialties" data-preview-focus></ul></section>
+          <section class="preview-section"><p class="section-kicker">05 · Collaboration</p><h2>How we can work together</h2><p class="preview-prose" data-preview-collaboration></p><ul class="member-specialties" data-preview-modes></ul><blockquote data-preview-note hidden></blockquote></section>
+          <section class="preview-section" data-preview-highlights-section hidden><p class="section-kicker">06 · Highlights</p><h2>Selected work &amp; moments</h2><div class="preview-highlights" data-preview-highlights></div></section>
+        </div>
+      </article>
+    </main>
+    <footer class="member-footer"><div><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="verification.html">Verification</a><a href="mailto:hello@fefeconnect.com">Support</a></div><p>© <span data-year></span> FEFE Connect · A service of Elevated Perspectives Psychotherapy, LLC</p></footer>
+  </body>
+</html>

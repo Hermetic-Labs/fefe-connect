@@ -64,6 +64,8 @@ export interface ProfileEntity extends TableEntity {
   displayName?: string;
   headline?: string;
   about?: string;
+  professionalHistory?: string;
+  educationTraining?: string;
   collaborationInterests?: string;
   professionalNote?: string;
   availability: ProfileAvailability;
@@ -72,6 +74,22 @@ export interface ProfileEntity extends TableEntity {
   photoContentType?: string;
   photoStatus?: "private_draft";
   photoUpdatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type ProfileMediaPlacement = "carousel" | "highlights";
+
+export interface ProfileMediaEntity extends TableEntity {
+  mediaId: string;
+  ownerAccountId: string;
+  professionalType: "legal" | "mental-health";
+  placement: ProfileMediaPlacement;
+  mediaKind: "image" | "video";
+  contentType: "image/jpeg" | "image/png" | "image/webp" | "video/mp4" | "video/webm";
+  blobName: string;
+  status: "private_draft" | "removed";
+  publicationEligible: false;
   createdAt: string;
   updatedAt: string;
 }
@@ -188,6 +206,7 @@ const names = {
   pilotEntitlements: "pilotentitlements",
   auditEvents: "auditevents",
   collaborationPosts: "collaborationposts",
+  profileMedia: "profilemedia",
 } as const;
 
 const clients = new Map<string, TableClient>();
@@ -340,6 +359,33 @@ export async function saveProfilePhoto(accountId: string, professionalType: Prof
     createdAt: existing?.createdAt ?? values.photoUpdatedAt,
     updatedAt: values.photoUpdatedAt,
   } satisfies ProfileEntity, "Merge");
+}
+
+export async function listProfileMedia(accountId: string): Promise<ProfileMediaEntity[]> {
+  const results: ProfileMediaEntity[] = [];
+  const entities = table(names.profileMedia).listEntities<ProfileMediaEntity>({
+    queryOptions: { filter: odata`ownerAccountId eq ${accountId} and status eq ${"private_draft"}` },
+  });
+  for await (const entity of entities) results.push(entity);
+  return results.sort((left, right) => left.createdAt.localeCompare(right.createdAt));
+}
+
+export async function getProfileMedia(accountId: string, mediaId: string): Promise<ProfileMediaEntity | undefined> {
+  const entities = table(names.profileMedia).listEntities<ProfileMediaEntity>({
+    queryOptions: { filter: odata`PartitionKey eq ${accountId} and mediaId eq ${mediaId}` },
+  });
+  for await (const entity of entities) return entity;
+  return undefined;
+}
+
+export async function saveProfileMedia(entity: ProfileMediaEntity): Promise<void> {
+  await table(names.profileMedia).upsertEntity(entity, "Replace");
+}
+
+export async function removeProfileMedia(entity: ProfileMediaEntity, now: string): Promise<void> {
+  await table(names.profileMedia).updateEntity({ ...entity, status: "removed", updatedAt: now }, "Replace", {
+    etag: typeof entity.etag === "string" ? entity.etag : "*",
+  });
 }
 
 export async function saveCollaborationPost(entity: CollaborationPostEntity): Promise<void> {

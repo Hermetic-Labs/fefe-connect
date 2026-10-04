@@ -47,3 +47,30 @@ export async function downloadPrivatePhoto(blobName: string): Promise<Uint8Array
     throw error;
   }
 }
+
+export function privateProfileMediaBlobName(accountId: string, mediaId: string): string {
+  return `profile-media/${accountId}/${mediaId}`;
+}
+
+export async function uploadPrivateProfileMedia(accountId: string, mediaId: string, bytes: Uint8Array, contentType: string): Promise<string> {
+  const blobName = privateProfileMediaBlobName(accountId, mediaId);
+  const client = service().getContainerClient(containerName).getBlockBlobClient(blobName);
+  await client.uploadData(bytes, {
+    blobHTTPHeaders: { blobContentType: contentType, blobCacheControl: "private, no-store" },
+    metadata: { state: "private-draft", purpose: "profile-media" },
+  });
+  return blobName;
+}
+
+export async function downloadPrivateProfileMedia(blobName: string): Promise<Uint8Array> {
+  if (!/^profile-media\/[a-f0-9]{40}\/[0-9a-f-]{36}$/.test(blobName)) {
+    throw new HttpError(404, "profile_media_not_found", "No private profile media item is stored.");
+  }
+  try {
+    return await service().getContainerClient(containerName).getBlobClient(blobName).downloadToBuffer();
+  } catch (error) {
+    const status = (error as { statusCode?: number }).statusCode;
+    if (status === 404) throw new HttpError(404, "profile_media_not_found", "No private profile media item is stored.");
+    throw error;
+  }
+}

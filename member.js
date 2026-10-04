@@ -24,6 +24,13 @@
   const profileInitials = document.querySelector("[data-profile-initials]");
   const profilePhotoInput = document.querySelector("[data-profile-photo-input]");
   const profileFileName = document.querySelector("[data-profile-file-name]");
+  const profileMediaInput = document.querySelector("[data-profile-media-input]");
+  const profileMediaPlacement = document.querySelector("[data-profile-media-placement]");
+  const profileMediaUpload = document.querySelector("[data-profile-media-upload]");
+  const profileMediaFile = document.querySelector("[data-profile-media-file]");
+  const profileMediaList = document.querySelector("[data-profile-media-list]");
+  const profileMediaCount = document.querySelector("[data-profile-media-count]");
+  const profileMediaStatus = document.querySelector("[data-profile-media-status]");
   const boardStudio = document.querySelector("[data-board-studio]");
   const boardList = document.querySelector("[data-board-list]");
   const boardMine = document.querySelector("[data-board-mine]");
@@ -34,7 +41,9 @@
   const boardSummaryCount = document.querySelector("[data-board-summary-count]");
   const reviewerLink = document.querySelector("[data-reviewer-link]");
   let selectedPhoto = null;
+  let selectedProfileMedia = null;
   let photoObjectUrl = "";
+  const mediaObjectUrls = [];
 
   const panels = [loading, gate, errorPanel, content];
   const show = (selected) => {
@@ -256,6 +265,8 @@
     profileField("display_name").value = profile.display_name || "";
     profileField("headline").value = profile.headline || "";
     profileField("about").value = profile.about || "";
+    profileField("professional_history").value = profile.professional_history || "";
+    profileField("education_training").value = profile.education_training || "";
     profileField("collaboration_interests").value = profile.collaboration_interests || "";
     profileField("professional_note").value = profile.professional_note || "";
     profileField("availability").value = profile.availability || "limited";
@@ -263,8 +274,61 @@
     profileForm.querySelectorAll('input[name="collaboration_modes"]').forEach((checkbox) => {
       checkbox.checked = selectedModes.has(checkbox.value);
     });
-    ["headline", "about", "collaboration_interests", "professional_note"].forEach(countField);
+    ["headline", "about", "professional_history", "education_training", "collaboration_interests", "professional_note"].forEach(countField);
     updateInitials();
+  };
+
+  const mediaCard = async (item, token) => {
+    const article = element("article", "profile-media-card");
+    const frame = element("div", "profile-media-frame");
+    const response = await fetch(`${apiBase}${item.content_url}`, { headers: authHeaders(token), credentials: "omit" });
+    if (response.ok) {
+      const url = URL.createObjectURL(await response.blob());
+      mediaObjectUrls.push(url);
+      if (item.media_kind === "video") {
+        const video = document.createElement("video");
+        video.src = url; video.controls = true; video.preload = "metadata";
+        frame.append(video);
+      } else {
+        const image = document.createElement("img");
+        image.src = url; image.alt = "Private profile media preview";
+        frame.append(image);
+      }
+    } else {
+      frame.append(element("span", "", "Preview unavailable"));
+    }
+    const copy = element("div", "profile-media-card-copy");
+    copy.append(element("strong", "", item.placement === "carousel" ? "Top carousel" : "Highlights"), element("span", "", `${item.media_kind} · private draft`));
+    const remove = element("button", "profile-media-remove", "Remove");
+    remove.type = "button";
+    remove.addEventListener("click", async () => {
+      if (!window.confirm("Remove this item from the private profile draft?")) return;
+      remove.disabled = true;
+      const response = await fetch(`${apiBase}${item.content_url}`, { method: "DELETE", headers: authHeaders(token, { Accept: "application/json" }), credentials: "omit" });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) { profileMediaStatus.textContent = body.message || "The media item could not be removed."; profileMediaStatus.dataset.tone = "error"; remove.disabled = false; return; }
+      profileMediaStatus.textContent = "Removed from the private draft."; profileMediaStatus.dataset.tone = "success";
+      await loadProfileMedia(token);
+    });
+    copy.append(remove);
+    article.append(frame, copy);
+    return article;
+  };
+
+  const loadProfileMedia = async (token) => {
+    const response = await fetch(`${apiBase}/v1/me/profile/media`, { headers: authHeaders(token, { Accept: "application/json" }), credentials: "omit" });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(body.message || "Profile media could not be loaded.");
+    mediaObjectUrls.splice(0).forEach((url) => URL.revokeObjectURL(url));
+    const media = body.media || [];
+    profileMediaCount.textContent = `${media.length} of ${body.maximum_items || 5}`;
+    profileMediaList.replaceChildren();
+    if (!media.length) {
+      profileMediaList.append(element("p", "profile-media-empty", "No carousel or highlight media yet."));
+    } else {
+      profileMediaList.append(...await Promise.all(media.map((item) => mediaCard(item, token))));
+    }
+    profileMediaUpload.disabled = !selectedProfileMedia || media.length >= (body.maximum_items || 5);
   };
 
   const loadPrivatePhoto = async (token) => {
@@ -291,6 +355,7 @@
       populateProfile(body.profile);
       showProfileMessage(body.profile.updated_at ? `Private draft ready · updated ${formatDate(body.profile.updated_at, true)}` : "Private draft ready.", "success");
       if (body.profile.photo?.available) void loadPrivatePhoto(token);
+      await loadProfileMedia(token);
     } catch (error) {
       showProfileMessage(error?.message || "Your profile draft could not be loaded.", "error");
     } finally {
@@ -437,6 +502,57 @@
     showProfileMessage("Photo selected. Save the private draft to upload it.");
   });
 
+  profileMediaInput?.addEventListener("change", () => {
+    const file = profileMediaInput.files?.[0];
+    selectedProfileMedia = null;
+    profileMediaUpload.disabled = true;
+    if (!file) { profileMediaFile.textContent = "No media selected"; return; }
+    const images = ["image/jpeg", "image/png", "image/webp"];
+    const videos = ["video/mp4", "video/webm"];
+    const maximum = images.includes(file.type) ? 5 * 1024 * 1024 : videos.includes(file.type) ? 20 * 1024 * 1024 : 0;
+    if (!maximum || file.size > maximum) {
+      profileMediaInput.value = "";
+      profileMediaFile.textContent = "Choose a supported image up to 5 MB or video up to 20 MB";
+      profileMediaStatus.textContent = "That media type or size is not supported.";
+      profileMediaStatus.dataset.tone = "error";
+      return;
+    }
+    selectedProfileMedia = file;
+    profileMediaFile.textContent = file.name;
+    profileMediaUpload.disabled = false;
+    profileMediaStatus.textContent = "Ready to add as a private draft.";
+    profileMediaStatus.dataset.tone = "neutral";
+  });
+
+  profileMediaUpload?.addEventListener("click", async () => {
+    if (!selectedProfileMedia) return;
+    profileMediaUpload.disabled = true;
+    profileMediaStatus.textContent = "Uploading private media…";
+    profileMediaStatus.dataset.tone = "neutral";
+    try {
+      const token = await window.FEFE_AUTH?.getAccessToken?.({ interactive: false });
+      if (!token) throw new Error("Your sign-in expired. Sign in again to continue.");
+      const response = await fetch(`${apiBase}/v1/me/profile/media?placement=${encodeURIComponent(profileMediaPlacement.value)}`, {
+        method: "POST",
+        headers: authHeaders(token, { Accept: "application/json", "Content-Type": selectedProfileMedia.type }),
+        body: selectedProfileMedia,
+        credentials: "omit",
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(body.message || "The media item could not be uploaded.");
+      selectedProfileMedia = null;
+      profileMediaInput.value = "";
+      profileMediaFile.textContent = "No media selected";
+      profileMediaStatus.textContent = "Private draft added. Nothing was published.";
+      profileMediaStatus.dataset.tone = "success";
+      await loadProfileMedia(token);
+    } catch (error) {
+      profileMediaStatus.textContent = error?.message || "The media item could not be uploaded.";
+      profileMediaStatus.dataset.tone = "error";
+      profileMediaUpload.disabled = false;
+    }
+  });
+
   profileForm?.querySelectorAll("textarea, input[name='headline'], input[name='display_name']").forEach((field) => {
     field.addEventListener("input", () => {
       if (field.name !== "display_name") countField(field.name);
@@ -457,6 +573,8 @@
         display_name: profileField("display_name").value,
         headline: profileField("headline").value,
         about: profileField("about").value,
+        professional_history: profileField("professional_history").value,
+        education_training: profileField("education_training").value,
         collaboration_interests: profileField("collaboration_interests").value,
         professional_note: profileField("professional_note").value,
         availability: profileField("availability").value,

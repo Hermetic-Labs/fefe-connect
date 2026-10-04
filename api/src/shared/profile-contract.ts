@@ -15,6 +15,8 @@ export interface ProfileDraftInput {
   displayName: string;
   headline: string;
   about: string;
+  professionalHistory: string;
+  educationTraining: string;
   collaborationInterests: string;
   professionalNote: string;
   availability: ProfileAvailability;
@@ -25,6 +27,8 @@ const allowedFields = new Set([
   "display_name",
   "headline",
   "about",
+  "professional_history",
+  "education_training",
   "collaboration_interests",
   "professional_note",
   "availability",
@@ -73,6 +77,8 @@ export function parseProfileDraft(value: unknown): ProfileDraftInput {
     displayName: text(input.display_name, "Display name", 80, 2),
     headline: text(input.headline, "Professional headline", 140),
     about: text(input.about, "About", 1_200),
+    professionalHistory: text(input.professional_history, "Professional history", 1_200),
+    educationTraining: text(input.education_training, "Education and training", 1_000),
     collaborationInterests: text(input.collaboration_interests, "Collaboration interests", 900),
     professionalNote: text(input.professional_note, "Professional note", 600),
     availability: availability as ProfileAvailability,
@@ -101,6 +107,8 @@ export function profileResponse(profile: ProfileEntity | undefined, application:
     display_name: profile?.displayName ?? (applicantName(application) || accountName || ""),
     headline: profile?.headline ?? application.headline ?? "",
     about: profile?.about ?? application.bio ?? "",
+    professional_history: profile?.professionalHistory ?? "",
+    education_training: profile?.educationTraining ?? "",
     collaboration_interests: profile?.collaborationInterests ?? "",
     professional_note: profile?.professionalNote ?? "",
     availability: profile?.availability ?? "limited",
@@ -130,6 +138,8 @@ export function profileEntity(
     displayName: input.displayName,
     headline: input.headline,
     about: input.about,
+    professionalHistory: input.professionalHistory,
+    educationTraining: input.educationTraining,
     collaborationInterests: input.collaborationInterests,
     professionalNote: input.professionalNote,
     availability: input.availability,

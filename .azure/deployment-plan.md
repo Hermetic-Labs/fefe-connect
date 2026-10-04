@@ -394,3 +394,14 @@ Deployment scope is limited to Function application code plus the GitHub Pages s
 - Added restricted queue and decision endpoints plus `/review.html`. Approvals move only pending requests to open; declines require a reason; every decision records reviewer, prior/resulting state, note, and timestamp.
 - `npm test` passed 33 tests, `npm audit --omit=dev` found zero vulnerabilities, TypeScript/browser builds passed, Bicep compiled, the read-only AZD preview completed without deletion/replacement, and AZD packaging passed.
 - No reviewer entitlement is granted by this deployment. Assignment remains a separate, explicit operator action using an opaque account ID.
+
+### Standardized profile media validation — 2026-10-04
+
+**Status:** Validated for application-only Function deployment plus one additive Table Storage table.
+
+- Added a shared legal/mental-health profile structure: Overview, Credentials & standing, Professional history, Focus areas, Collaboration, and Highlights. Submitted credentials remain explicitly labeled as submitted and do not create a verification claim.
+- Added five fixed owner-only media slots shared by the top carousel and Highlights. JPEG/PNG/WebP images are limited to 5 MB; MP4/WebM videos are limited to 20 MB; declared types are checked against file signatures.
+- Originals remain in private `upload-quarantine`, with authenticated streaming and soft removal. No storage URL, SAS token, public read path, autoplay, publish action, or verified badge was added.
+- `npm test` passed 36 tests, `npm audit --omit=dev` found zero vulnerabilities, TypeScript/browser builds and JavaScript syntax checks passed, and `git diff --check` passed.
+- Bicep compiled, `azd provision --preview --no-prompt` completed in 20 seconds with no delete/replace action, and `azd package --no-prompt` succeeded. The preview again showed only known provider/module normalization on deployed services plus the additive table represented in source.
+- Deployment is limited to creating the `profilemedia` table through the authenticated data plane, deploying Function application code, and publishing the GitHub Pages source. The unrelated preview drift will not be applied.

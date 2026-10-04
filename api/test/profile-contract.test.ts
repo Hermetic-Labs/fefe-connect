@@ -32,6 +32,8 @@ const validDraft = {
   display_name: "Fictional Clinician",
   headline: "Collaborative care professional",
   about: "A factual professional introduction.",
+  professional_history: "Ten years of professional experience across community and organizational settings.",
+  education_training: "Graduate education and continuing professional training.",
   collaboration_interests: "Ethical cross-disciplinary education.",
   professional_note: "I welcome clear, professional introductions.",
   availability: "open",
@@ -41,6 +43,7 @@ const validDraft = {
 test("accepts a bounded private profile draft", () => {
   const parsed = parseProfileDraft(validDraft);
   assert.equal(parsed.availability, "open");
+  assert.match(parsed.professionalHistory, /Ten years/);
   assert.deepEqual(parsed.collaborationModes, ["professional_consultation", "education_training"]);
 });
 
@@ -70,6 +73,7 @@ test("builds an owner-only entity and preserves private photo metadata", () => {
   assert.equal(entity.photoBlobName, existing.photoBlobName);
   assert.equal(response.publication_eligible, false);
   assert.equal(response.photo.available, true);
+  assert.match(response.professional_history, /Ten years/);
 });
 
 test("detects allowed photo formats by signature and claimed type", () => {

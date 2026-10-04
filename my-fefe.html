@@ -9,12 +9,12 @@
     <title>My FEFE — FEFE Connect</title>
     <link rel="stylesheet" href="styles.css?v=20261004-member1" />
     <link rel="stylesheet" href="account.css?v=20261004-identity3" />
-    <link rel="stylesheet" href="member.css?v=20261004-board1" />
+    <link rel="stylesheet" href="member.css?v=20261004-media1" />
     <script src="site-config.js"></script>
     <script src="assets/auth.bundle.js?v=20261004-account1" defer></script>
     <script src="app.js?v=20261004-brand1" defer></script>
     <script src="account.js?v=20261004-identity3" defer></script>
-    <script src="member.js?v=20261004-board1" defer></script>
+    <script src="member.js?v=20261004-media1" defer></script>
   </head>
   <body class="member-body">
     <a class="skip-link" href="#member-main">Skip to your FEFE record</a>
@@ -144,6 +144,23 @@
                 </div>
               </section>
 
+              <section class="profile-media-panel" aria-labelledby="profile-media-title">
+                <div class="profile-media-heading">
+                  <div><p class="section-kicker">Images &amp; video</p><h3 id="profile-media-title">Choose where each story belongs.</h3></div>
+                  <span data-profile-media-count>0 of 5</span>
+                </div>
+                <p>Add up to five items total. Place each one in the top carousel or the Highlights section. Images may be JPEG, PNG, or WebP up to 5 MB; videos may be MP4 or WebM up to 20 MB.</p>
+                <div class="profile-media-controls">
+                  <label class="profile-field"><span>Placement</span><select data-profile-media-placement><option value="carousel">Top carousel</option><option value="highlights">Profile highlights</option></select></label>
+                  <label class="profile-file-button" for="profile-media-input">Choose image or video</label>
+                  <input id="profile-media-input" data-profile-media-input type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm" />
+                  <button class="member-secondary" type="button" data-profile-media-upload disabled>Add private draft</button>
+                </div>
+                <p class="profile-file-name" data-profile-media-file>No media selected</p>
+                <div class="profile-media-list" data-profile-media-list></div>
+                <p class="profile-save-status" data-profile-media-status role="status" aria-live="polite"></p>
+              </section>
+
               <div class="profile-field-grid">
                 <label class="profile-field">
                   <span>Display name</span>
@@ -171,6 +188,18 @@
                 <span>About</span>
                 <textarea name="about" rows="7" maxlength="1200" placeholder="Share your professional background, approach, and the communities or organizations you serve."></textarea>
                 <small><span data-count-for="about">0</span>/1200</small>
+              </label>
+
+              <label class="profile-field">
+                <span>Professional history</span>
+                <textarea name="professional_history" rows="6" maxlength="1200" placeholder="Summarize roles, years of experience, leadership, and the professional settings where you have worked."></textarea>
+                <small><span data-count-for="professional_history">0</span>/1200</small>
+              </label>
+
+              <label class="profile-field">
+                <span>Education &amp; training</span>
+                <textarea name="education_training" rows="5" maxlength="1000" placeholder="List relevant degrees, training, and continuing education in clear factual language."></textarea>
+                <small><span data-count-for="education_training">0</span>/1000</small>
               </label>
 
               <fieldset class="profile-modes">
@@ -203,6 +232,7 @@
 
               <div class="profile-form-actions">
                 <button class="member-primary" type="submit" data-profile-save>Save private draft <span aria-hidden="true">→</span></button>
+                <a class="member-secondary profile-preview-link" href="profile-preview.html">Preview standardized profile</a>
                 <p class="profile-save-status" data-profile-status role="status" aria-live="polite"></p>
               </div>
             </form>
