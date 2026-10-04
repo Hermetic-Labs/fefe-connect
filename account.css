@@ -10,9 +10,12 @@
   color: var(--ink-soft);
   font-size: .82rem;
 }
-.account-status { margin: 0; min-width: 0; overflow-wrap: anywhere; line-height: 1.5; }
+.account-status { margin: 0; min-width: 0; display: flex; align-items: center; gap: 9px; overflow-wrap: anywhere; line-height: 1.35; }
 .account-status strong { color: var(--ink); font-weight: 700; }
-.account-email, .account-error { display: block; font-size: .76rem; }
+.account-identity { min-width: 0; }
+.account-avatar { width: 32px; height: 32px; flex: 0 0 32px; display: grid; place-items: center; overflow: hidden; border-radius: 50%; color: white; background: var(--green); font-family: Georgia, serif; font-size: .72rem; font-weight: 800; letter-spacing: .03em; }
+.account-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.account-error { display: block; font-size: .76rem; }
 .account-error { color: #9a352b; }
 .account-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .account-home {
