@@ -20,4 +20,10 @@ The Collaboration Board is a members-only, structured request surface. It is not
 - case, client, patient, or clinical content;
 - endorsements, rankings, lead sales, or referral guarantees.
 
-The next slice should add an operator moderation queue and auditable approve/decline actions. A later introduction request can notify the post owner without revealing either party's contact details until both consent.
+## Reviewer moderation
+
+The restricted `/review.html` surface and `/v1/reviewer/collaboration-posts` API require an explicit active reviewer entitlement stored against the opaque FEFE account ID. A member cannot grant this entitlement through the browser. Reviewers can approve a pending request into `open` status or decline it; declines require a reason. Each decision records the reviewer account, previous and resulting states, note, and timestamp in the private reviews table. Concurrent or repeated decisions fail closed.
+
+Reviewer access is assigned only through the operator script with a known opaque account ID and operator reference. No production reviewer is inferred from email, profile type, or application ownership.
+
+A later introduction request can notify the post owner without revealing either party's contact details until both consent.

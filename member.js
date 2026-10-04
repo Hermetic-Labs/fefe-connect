@@ -32,6 +32,7 @@
   const boardSubmit = document.querySelector("[data-board-submit]");
   const boardStatus = document.querySelector("[data-board-status]");
   const boardSummaryCount = document.querySelector("[data-board-summary-count]");
+  const reviewerLink = document.querySelector("[data-reviewer-link]");
   let selectedPhoto = null;
   let photoObjectUrl = "";
 
@@ -343,6 +344,8 @@
       const body = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(body.message || "The collaboration board could not be loaded.");
       renderBoard(body);
+      const reviewerResponse = await fetch(`${apiBase}/v1/reviewer/collaboration-posts`, { headers: authHeaders(token, { Accept: "application/json" }), credentials: "omit" });
+      reviewerLink.hidden = !reviewerResponse.ok;
     } catch (error) {
       boardCount.textContent = "Unavailable";
       boardList.replaceChildren(boardEmpty(error?.message || "The collaboration board could not be loaded."));

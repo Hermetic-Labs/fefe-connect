@@ -16,7 +16,8 @@
     "test": "npm run clean && npm run build && node --test dist/test/**/*.test.js",
     "test:nppes:live": "tsx scripts/smoke-nppes.ts",
     "check": "npm run clean && npm run build && npm run build:client",
-    "seed:approved": "tsx scripts/seed-approved-application.ts"
+    "seed:approved": "tsx scripts/seed-approved-application.ts",
+    "grant:reviewer": "tsx scripts/grant-reviewer.ts"
   },
   "dependencies": {
     "@azure/data-tables": "^13.3.2",

@@ -387,3 +387,10 @@ Deployment scope is limited to Function application code plus the GitHub Pages s
 - The live API health probe returned `200`; the board endpoint returned `401` without a bearer token.
 - Thirty-one tests and the production dependency audit passed. Bicep compilation, AZD preview, packaging, Function deployment, and GitHub Pages run `37192494029` passed.
 - Signed-in browser acceptance loaded the empty production board, its members-only and moderation language, and the user's empty submission-status state. No fictional post was submitted during acceptance.
+
+### Collaboration reviewer validation — 2026-10-04
+
+- Added a fail-closed reviewer entitlement in the existing private `reviews` table; no browser endpoint can grant it.
+- Added restricted queue and decision endpoints plus `/review.html`. Approvals move only pending requests to open; declines require a reason; every decision records reviewer, prior/resulting state, note, and timestamp.
+- `npm test` passed 33 tests, `npm audit --omit=dev` found zero vulnerabilities, TypeScript/browser builds passed, Bicep compiled, the read-only AZD preview completed without deletion/replacement, and AZD packaging passed.
+- No reviewer entitlement is granted by this deployment. Assignment remains a separate, explicit operator action using an opaque account ID.

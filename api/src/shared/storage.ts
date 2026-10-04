@@ -96,6 +96,26 @@ export interface CollaborationPostEntity extends TableEntity {
   updatedAt: string;
 }
 
+export interface ReviewerAccessEntity extends TableEntity {
+  accountId: string;
+  role: "reviewer";
+  status: "active" | "suspended";
+  grantedBy: string;
+  grantedAt: string;
+  updatedAt: string;
+}
+
+export interface CollaborationReviewEntity extends TableEntity {
+  reviewId: string;
+  postId: string;
+  reviewerAccountId: string;
+  decision: "approve" | "decline";
+  note?: string;
+  previousStatus: CollaborationPostStatus;
+  resultingStatus: CollaborationPostStatus;
+  reviewedAt: string;
+}
+
 export interface ConsentEventEntity extends TableEntity {
   applicationId: string;
   accountId: string;
@@ -342,6 +362,45 @@ export async function listOpenCollaborationPosts(): Promise<CollaborationPostEnt
   });
   for await (const entity of entities) results.push(entity);
   return results;
+}
+
+export async function getCollaborationPost(postId: string): Promise<CollaborationPostEntity | undefined> {
+  return optionalEntity<CollaborationPostEntity>(table(names.collaborationPosts), "posts", postId);
+}
+
+export async function listPendingCollaborationPosts(): Promise<CollaborationPostEntity[]> {
+  const results: CollaborationPostEntity[] = [];
+  const entities = table(names.collaborationPosts).listEntities<CollaborationPostEntity>({ queryOptions: { filter: odata`status eq ${"pending_review"}` } });
+  for await (const entity of entities) results.push(entity);
+  return results;
+}
+
+export async function getReviewerAccess(accountId: string): Promise<ReviewerAccessEntity | undefined> {
+  return optionalEntity<ReviewerAccessEntity>(table(names.reviews), "reviewers", accountId);
+}
+
+export async function saveReviewerAccess(entity: ReviewerAccessEntity): Promise<void> {
+  await table(names.reviews).upsertEntity(entity, "Merge");
+}
+
+export async function saveCollaborationDecision(post: CollaborationPostEntity, reviewerAccountId: string, decision: "approve" | "decline", note: string, now: string): Promise<CollaborationPostEntity> {
+  const resultingStatus: CollaborationPostStatus = decision === "approve" ? "open" : "declined";
+  const updated: CollaborationPostEntity = { ...post, status: resultingStatus, updatedAt: now };
+  await table(names.collaborationPosts).updateEntity(updated, "Replace", { etag: typeof post.etag === "string" ? post.etag : "*" });
+  const reviewId = safeOpaqueId(`${post.postId}|${reviewerAccountId}|${now}`);
+  await table(names.reviews).createEntity({
+    partitionKey: "collaboration-post-reviews",
+    rowKey: reviewId,
+    reviewId,
+    postId: post.postId,
+    reviewerAccountId,
+    decision,
+    note: note || undefined,
+    previousStatus: post.status,
+    resultingStatus,
+    reviewedAt: now,
+  } satisfies CollaborationReviewEntity);
+  return updated;
 }
 
 export async function getBillingCustomer(ownerSubject: string): Promise<BillingCustomerEntity | undefined> {
