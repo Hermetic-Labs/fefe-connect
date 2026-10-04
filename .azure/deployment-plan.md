@@ -378,3 +378,12 @@ Deployment scope is limited to Function application code plus the GitHub Pages s
 - Signed-in browser acceptance loaded the private profile editor from the production API using the existing fictional mental-health application. The screen labels the record `Private · owner only`, exposes no publish action, and preserves the case/client/patient/privilege warning.
 - Responsive browser acceptance at a 767-pixel viewport measured a column footer with inner padding, all content inside its bounds, and no horizontal overflow. Privacy, Terms, Verification, Support, and the legal-operator line were visibly complete.
 - No profile edit or image was submitted during deployment acceptance, so the existing account record was not mutated merely to prove the screen.
+
+### Collaboration Board initial deployment — 2026-10-04
+
+- Added the `collaborationposts` table to Bicep and created it in the existing FEFE storage account; no new service or compute resource was introduced.
+- Deployed authenticated `GET`/`POST /api/v1/me/collaboration-posts`. Submissions are owner-scoped and enter `pending_review`; only `open`, unexpired records can appear to other signed-in users.
+- The contract requires a no-sensitive-information attestation, rejects unknown fields, bounds every text field, and caps response windows and automatic expiry.
+- The live API health probe returned `200`; the board endpoint returned `401` without a bearer token.
+- Thirty-one tests and the production dependency audit passed. Bicep compilation, AZD preview, packaging, Function deployment, and GitHub Pages run `37192494029` passed.
+- Signed-in browser acceptance loaded the empty production board, its members-only and moderation language, and the user's empty submission-status state. No fictional post was submitted during acceptance.
