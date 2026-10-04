@@ -5,9 +5,10 @@
   const bar = document.createElement('section');
   bar.className = 'account-bar';
   bar.setAttribute('aria-label', 'Your FEFE account');
-  bar.innerHTML = '<p class="account-status" role="status" aria-live="polite">Checking sign-in…</p><button class="account-action" type="button" disabled>Sign in</button>';
+  bar.innerHTML = '<p class="account-status" role="status" aria-live="polite">Checking sign-in…</p><div class="account-actions"><a class="account-home" href="my-fefe.html" hidden>My FEFE</a><button class="account-action" type="button" disabled>Sign in</button></div>';
   header.insertAdjacentElement('afterend', bar);
   const status = bar.querySelector('.account-status');
+  const homeLink = bar.querySelector('.account-home');
   const button = bar.querySelector('.account-action');
   let busy = false;
 
@@ -30,6 +31,7 @@
     } else {
       status.textContent = 'Not signed in';
     }
+    homeLink.hidden = !account;
     button.textContent = account ? 'Sign out' : 'Sign in';
     button.disabled = busy || !window.FEFE_AUTH?.isConfigured();
   }

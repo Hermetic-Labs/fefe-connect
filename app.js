@@ -3,6 +3,14 @@ const navigation = document.querySelector("nav");
 const explainerButton = document.querySelector(".explainer-player");
 const explainerAudio = document.querySelector("#explainer-audio");
 
+document.querySelectorAll(".brand").forEach((brand) => {
+  if (brand.querySelector(".brand-tagline")) return;
+  const tagline = document.createElement("span");
+  tagline.className = "brand-tagline";
+  tagline.textContent = "Firms and Experts Fully Evaluated";
+  brand.append(tagline);
+});
+
 const formatAudioTime = (seconds) => {
   if (!Number.isFinite(seconds)) return "0:00";
   const minutes = Math.floor(seconds / 60);

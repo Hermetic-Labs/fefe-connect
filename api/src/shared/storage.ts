@@ -1,4 +1,4 @@
-import { TableClient, type TableEntity } from "@azure/data-tables";
+import { odata, TableClient, type TableEntity } from "@azure/data-tables";
 import { azureCredential } from "./credential";
 import { loadConfig } from "./config";
 import { HttpError, isNotFound } from "./errors";
@@ -162,6 +162,15 @@ export async function ensureTables(): Promise<void> {
 
 export async function getApplication(applicationId: string): Promise<ApplicationEntity | undefined> {
   return optionalEntity<ApplicationEntity>(table(names.applications), "applications", applicationId);
+}
+
+export async function listApplicationsForAccount(accountId: string): Promise<ApplicationEntity[]> {
+  const applications: ApplicationEntity[] = [];
+  const entities = table(names.applications).listEntities<ApplicationEntity>({
+    queryOptions: { filter: odata`ownerAccountId eq ${accountId}` },
+  });
+  for await (const entity of entities) applications.push(entity);
+  return applications;
 }
 
 export async function getOrCreateAccount(ownerSubject: string, issuer: string, email?: string, displayName?: string): Promise<AccountEntity> {

@@ -146,6 +146,7 @@
       }
     },
     "legalStandingClaim": {
+      "type": "object",
       "allOf": [
         { "$ref": "#/$defs/claimBase" },
         {
@@ -169,6 +170,7 @@
       "unevaluatedProperties": false
     },
     "mentalHealthStandingClaim": {
+      "type": "object",
       "allOf": [
         { "$ref": "#/$defs/claimBase" },
         {
@@ -192,6 +194,7 @@
       "unevaluatedProperties": false
     },
     "entityClaim": {
+      "type": "object",
       "allOf": [
         { "$ref": "#/$defs/claimBase" },
         {
@@ -206,6 +209,7 @@
       "unevaluatedProperties": false
     },
     "affiliationClaim": {
+      "type": "object",
       "allOf": [
         { "$ref": "#/$defs/claimBase" },
         {
@@ -221,6 +225,7 @@
       "unevaluatedProperties": false
     },
     "npiClaim": {
+      "type": "object",
       "allOf": [
         { "$ref": "#/$defs/claimBase" },
         {

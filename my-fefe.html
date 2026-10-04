@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="View your private FEFE Connect application and professional-record status." />
+    <meta name="theme-color" content="#163f3a" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>My FEFE — FEFE Connect</title>
+    <link rel="stylesheet" href="styles.css?v=20261004-member1" />
+    <link rel="stylesheet" href="account.css?v=20261004-member2" />
+    <link rel="stylesheet" href="member.css?v=20261004-member1" />
+    <script src="site-config.js"></script>
+    <script src="assets/auth.bundle.js?v=20261004-account1" defer></script>
+    <script src="app.js?v=20261004-brand1" defer></script>
+    <script src="account.js?v=20261004-member2" defer></script>
+    <script src="member.js?v=20261004-member1" defer></script>
+  </head>
+  <body class="member-body">
+    <a class="skip-link" href="#member-main">Skip to your FEFE record</a>
+    <header class="site-header member-header">
+      <a class="brand" href="index.html" aria-label="FEFE Connect home">
+        <img class="brand-logo" src="assets/fefe-logo.png" alt="FEFE Connect" />
+      </a>
+      <nav aria-label="Member navigation">
+        <a href="index.html">Welcome</a>
+        <a href="onboarding.html">Application</a>
+        <a href="legal.html">Legal &amp; trust</a>
+        <a class="nav-action" href="my-fefe.html" aria-current="page">My FEFE</a>
+      </nav>
+      <button class="menu-button" type="button" aria-expanded="false" aria-label="Open navigation">
+        <span></span><span></span>
+      </button>
+    </header>
+
+    <main class="member-main" id="member-main">
+      <section class="member-intro" aria-labelledby="member-title">
+        <p class="eyebrow"><span></span> Private member record</p>
+        <h1 id="member-title">My FEFE.</h1>
+        <p>Your application and professional-record status, shown with the same boundaries FEFE uses during review.</p>
+      </section>
+
+      <section class="member-shell" aria-live="polite" aria-busy="true" data-member-shell>
+        <div class="member-loading" data-member-loading>
+          <span class="member-spinner" aria-hidden="true"></span>
+          <p>Checking your secure FEFE account…</p>
+        </div>
+
+        <section class="member-gate" data-member-gate hidden>
+          <p class="section-kicker">Secure sign-in</p>
+          <h2>Sign in to see your private record.</h2>
+          <p>Your FEFE account, application, and review state are available only after secure sign-in.</p>
+          <button class="member-primary" type="button" data-member-sign-in>Sign in securely <span aria-hidden="true">→</span></button>
+          <p class="member-boundary">Signing in does not mean an application is approved or a professional record is verified.</p>
+        </section>
+
+        <section class="member-error" data-member-error hidden>
+          <p class="section-kicker">Unable to load My FEFE</p>
+          <h2>Your private record could not be loaded.</h2>
+          <p data-member-error-message>Please try again.</p>
+          <button class="member-secondary" type="button" data-member-retry>Try again</button>
+        </section>
+
+        <div data-member-content hidden>
+          <section class="member-status-hero" data-member-status-hero>
+            <div>
+              <p class="member-status-label" data-member-status-label></p>
+              <h2 data-member-headline></h2>
+              <p data-member-summary></p>
+            </div>
+            <a class="member-primary" data-member-primary-action hidden></a>
+          </section>
+          <p class="member-updated" data-member-updated></p>
+          <section class="member-cards" aria-label="Your FEFE record" data-member-cards></section>
+        </div>
+      </section>
+    </main>
+
+    <footer class="member-footer">
+      <div><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="verification.html">Verification</a><a href="mailto:hello@fefeconnect.com">Support</a></div>
+      <p>© <span data-year></span> FEFE Connect · A service of Elevated Perspectives Psychotherapy, LLC</p>
+    </footer>
+  </body>
+</html>

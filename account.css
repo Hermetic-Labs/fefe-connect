@@ -14,8 +14,17 @@
 .account-status strong { color: var(--ink); font-weight: 700; }
 .account-email, .account-error { display: block; font-size: .76rem; }
 .account-error { color: #9a352b; }
+.account-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.account-home {
+  padding: 9px 4px;
+  color: var(--green);
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+}
+.account-home:hover { color: var(--coral); }
+.account-home:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
 .account-action {
-  flex-shrink: 0;
   padding: 9px 18px;
   border: 1px solid var(--green);
   border-radius: 999px;
@@ -30,5 +39,7 @@
 .account-action:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
 @media (max-width: 480px) {
   .account-bar { width: calc(100% - 32px); gap: 10px; }
+  .account-actions { gap: 6px; }
+  .account-home { padding-inline: 2px; }
   .account-action { padding: 9px 12px; }
 }

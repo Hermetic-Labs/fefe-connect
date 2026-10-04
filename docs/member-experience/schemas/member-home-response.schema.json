@@ -150,6 +150,7 @@
       }
     },
     "applicationStatusCard": {
+      "type": "object",
       "allOf": [
         { "$ref": "#/$defs/cardBase" },
         {
@@ -191,6 +192,7 @@
       "unevaluatedProperties": false
     },
     "submittedProfileCard": {
+      "type": "object",
       "allOf": [
         { "$ref": "#/$defs/cardBase" },
         {
@@ -201,9 +203,21 @@
             "data": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["headline", "bio_excerpt", "specialties", "organization", "publication_state"],
+              "required": [
+                "headline",
+                "bio",
+                "bio_excerpt",
+                "specialties",
+                "organization",
+                "jurisdiction",
+                "website",
+                "credential_label",
+                "masked_identifier",
+                "publication_state"
+              ],
               "properties": {
                 "headline": { "type": ["string", "null"], "maxLength": 90 },
+                "bio": { "type": ["string", "null"], "maxLength": 700 },
                 "bio_excerpt": { "type": ["string", "null"], "maxLength": 240 },
                 "specialties": {
                   "type": "array",
@@ -211,6 +225,10 @@
                   "items": { "type": "string", "minLength": 1, "maxLength": 60 }
                 },
                 "organization": { "type": ["string", "null"], "maxLength": 160 },
+                "jurisdiction": { "type": ["string", "null"], "maxLength": 80 },
+                "website": { "type": ["string", "null"], "format": "uri", "maxLength": 300 },
+                "credential_label": { "type": "string", "minLength": 1, "maxLength": 120 },
+                "masked_identifier": { "type": ["string", "null"], "maxLength": 100 },
                 "publication_state": { "enum": ["not_created", "submitted_only", "hidden", "published"] }
               }
             }
@@ -240,6 +258,7 @@
       }
     },
     "legalRecordSummaryCard": {
+      "type": "object",
       "allOf": [
         { "$ref": "#/$defs/cardBase" },
         {
@@ -271,6 +290,7 @@
       "unevaluatedProperties": false
     },
     "mentalHealthRecordSummaryCard": {
+      "type": "object",
       "allOf": [
         { "$ref": "#/$defs/cardBase" },
         {
@@ -305,6 +325,7 @@
       "unevaluatedProperties": false
     },
     "nextStepsCard": {
+      "type": "object",
       "allOf": [
         { "$ref": "#/$defs/cardBase" },
         {
@@ -340,6 +361,7 @@
       "unevaluatedProperties": false
     },
     "supportCard": {
+      "type": "object",
       "allOf": [
         { "$ref": "#/$defs/cardBase" },
         {
