@@ -1,6 +1,7 @@
 export interface AppConfig {
   siteOrigin: string;
   storageTableEndpoint?: string;
+  storageBlobEndpoint?: string;
   storageConnectionString?: string;
   managedIdentityClientId?: string;
   keyVaultUri?: string;
@@ -35,6 +36,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   return {
     siteOrigin: value(env, "FEFE_SITE_ORIGIN") ?? "https://fefeconnect.com",
     storageTableEndpoint: value(env, "APPLICATION_STORAGE__tableServiceUri"),
+    storageBlobEndpoint: value(env, "APPLICATION_STORAGE__blobServiceUri"),
     storageConnectionString: value(env, "APPLICATION_STORAGE_CONNECTION_STRING"),
     managedIdentityClientId: value(env, "AZURE_CLIENT_ID"),
     keyVaultUri: value(env, "KEY_VAULT_URI"),

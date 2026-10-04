@@ -1,12 +1,12 @@
 # FEFE member experience contract
 
-**Status:** Shared applicant-home slice implemented; reviewer-backed professional-record branches remain gated
+**Status:** Shared applicant-home and owner-only profile-draft slices implemented; reviewer-backed professional-record branches remain gated
 **Date:** 2026-10-04
 **Scope:** The signed-in experience after account creation, for applicants and eventually approved members
 
 ## 1. Product truth at this boundary
 
-The deployed system can authenticate a customer, create an opaque FEFE account, accept a versioned application, store consent, and return an owner-scoped My FEFE home with application status and private submitted-profile detail. It does not yet make reviewer decisions, create verified profile records, publish profiles, list members, match professionals, send messages, or activate paid membership.
+The deployed system can authenticate a customer, create an opaque FEFE account, accept a versioned application, store consent, return an owner-scoped My FEFE home, and save private professional profile drafts and owner-only draft photos. It does not yet make reviewer decisions, create verified profile records, publish profiles, list members, match professionals, send messages, or activate paid membership. The profile customization and photo security boundary is documented in [private-profile-customization.md](private-profile-customization.md).
 
 The member experience must therefore begin as a private record of what FEFE actually knows. It must never imply that sign-in, payment, an NPI, an organization record, or a submitted application means that a professional has been approved or verified.
 

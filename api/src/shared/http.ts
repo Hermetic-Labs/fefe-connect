@@ -28,6 +28,29 @@ function corsHeaders(request: HttpRequest): Record<string, string> {
   };
 }
 
+export function binaryResponse(
+  request: HttpRequest,
+  status: number,
+  body: Uint8Array,
+  contentType: string,
+  id = requestId(request),
+): HttpResponseInit {
+  return {
+    status,
+    headers: {
+      ...corsHeaders(request),
+      "Cache-Control": "private, no-store",
+      "Content-Type": contentType,
+      "Content-Disposition": "inline",
+      "Referrer-Policy": "no-referrer",
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Request-ID": id,
+    },
+    body,
+  };
+}
+
 export function jsonResponse(request: HttpRequest, status: number, body: unknown, id = requestId(request)): HttpResponseInit {
   return {
     status,

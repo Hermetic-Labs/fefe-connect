@@ -55,6 +55,27 @@ export interface ApplicationEntity extends TableEntity {
   submissionHash?: string;
 }
 
+export type ProfileAvailability = "open" | "limited" | "not_accepting";
+
+export interface ProfileEntity extends TableEntity {
+  accountId: string;
+  professionalType: "legal" | "mental-health";
+  visibility: "private";
+  displayName?: string;
+  headline?: string;
+  about?: string;
+  collaborationInterests?: string;
+  professionalNote?: string;
+  availability: ProfileAvailability;
+  collaborationModesJson?: string;
+  photoBlobName?: string;
+  photoContentType?: string;
+  photoStatus?: "private_draft";
+  photoUpdatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ConsentEventEntity extends TableEntity {
   applicationId: string;
   accountId: string;
@@ -248,6 +269,36 @@ export async function saveConsentEvent(entity: ConsentEventEntity): Promise<void
 
 export async function saveApplication(entity: ApplicationEntity): Promise<void> {
   await table(names.applications).upsertEntity(entity, "Merge");
+}
+
+export async function getProfile(accountId: string): Promise<ProfileEntity | undefined> {
+  return optionalEntity<ProfileEntity>(table(names.profiles), "profiles", accountId);
+}
+
+export async function saveProfile(entity: ProfileEntity): Promise<void> {
+  await table(names.profiles).upsertEntity(entity, "Merge");
+}
+
+export async function saveProfilePhoto(accountId: string, professionalType: ProfileEntity["professionalType"], values: {
+  photoBlobName: string;
+  photoContentType: string;
+  photoUpdatedAt: string;
+}): Promise<void> {
+  const existing = await getProfile(accountId);
+  await table(names.profiles).upsertEntity({
+    partitionKey: "profiles",
+    rowKey: accountId,
+    accountId,
+    professionalType,
+    visibility: "private",
+    availability: existing?.availability ?? "limited",
+    photoBlobName: values.photoBlobName,
+    photoContentType: values.photoContentType,
+    photoStatus: "private_draft",
+    photoUpdatedAt: values.photoUpdatedAt,
+    createdAt: existing?.createdAt ?? values.photoUpdatedAt,
+    updatedAt: values.photoUpdatedAt,
+  } satisfies ProfileEntity, "Merge");
 }
 
 export async function getBillingCustomer(ownerSubject: string): Promise<BillingCustomerEntity | undefined> {

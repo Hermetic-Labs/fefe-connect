@@ -23,6 +23,7 @@
     "@azure/functions": "^4.16.2",
     "@azure/identity": "^4.13.2",
     "@azure/keyvault-secrets": "^4.10.0",
+    "@azure/storage-blob": "^12.34.0",
     "@types/node": "^22.19.1",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",

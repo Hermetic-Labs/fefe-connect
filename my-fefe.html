@@ -9,12 +9,12 @@
     <title>My FEFE — FEFE Connect</title>
     <link rel="stylesheet" href="styles.css?v=20261004-member1" />
     <link rel="stylesheet" href="account.css?v=20261004-member2" />
-    <link rel="stylesheet" href="member.css?v=20261004-member1" />
+    <link rel="stylesheet" href="member.css?v=20261004-profile1" />
     <script src="site-config.js"></script>
     <script src="assets/auth.bundle.js?v=20261004-account1" defer></script>
     <script src="app.js?v=20261004-brand1" defer></script>
     <script src="account.js?v=20261004-member2" defer></script>
-    <script src="member.js?v=20261004-member1" defer></script>
+    <script src="member.js?v=20261004-profile1" defer></script>
   </head>
   <body class="member-body">
     <a class="skip-link" href="#member-main">Skip to your FEFE record</a>
@@ -72,6 +72,95 @@
           </section>
           <p class="member-updated" data-member-updated></p>
           <section class="member-cards" aria-label="Your FEFE record" data-member-cards></section>
+
+          <section class="profile-studio" data-profile-studio hidden aria-labelledby="profile-studio-title">
+            <header class="profile-studio-header">
+              <div>
+                <p class="section-kicker">Private profile draft</p>
+                <h2 id="profile-studio-title">Make it feel like you.</h2>
+                <p>Shape the professional introduction FEFE may use after review. Saving here does not publish your profile or create a verification claim.</p>
+              </div>
+              <span class="profile-private-badge">Private · owner only</span>
+            </header>
+
+            <form class="profile-form" data-profile-form>
+              <section class="profile-photo-panel" aria-labelledby="profile-photo-title">
+                <div class="profile-avatar" data-profile-avatar aria-hidden="true">
+                  <img data-profile-photo alt="" hidden />
+                  <span data-profile-initials>FE</span>
+                </div>
+                <div>
+                  <h3 id="profile-photo-title">Profile photo</h3>
+                  <p>JPEG, PNG, or WebP · up to 3 MB. For now, the original stays in private draft storage and is not eligible for publication.</p>
+                  <label class="profile-file-button" for="profile-photo-input">Choose a photo</label>
+                  <input id="profile-photo-input" data-profile-photo-input type="file" accept="image/jpeg,image/png,image/webp" />
+                  <span class="profile-file-name" data-profile-file-name>No new photo selected</span>
+                </div>
+              </section>
+
+              <div class="profile-field-grid">
+                <label class="profile-field">
+                  <span>Display name</span>
+                  <input name="display_name" autocomplete="name" minlength="2" maxlength="80" required />
+                  <small>Use the professional name you want other members to see later.</small>
+                </label>
+                <label class="profile-field">
+                  <span>Availability</span>
+                  <select name="availability">
+                    <option value="open">Open to collaboration</option>
+                    <option value="limited">Limited availability</option>
+                    <option value="not_accepting">Not accepting new connections</option>
+                  </select>
+                  <small>This describes professional availability, not appointment capacity.</small>
+                </label>
+              </div>
+
+              <label class="profile-field">
+                <span>Professional headline</span>
+                <input name="headline" maxlength="140" placeholder="A short, factual description of your work" />
+                <small><span data-count-for="headline">0</span>/140</small>
+              </label>
+
+              <label class="profile-field">
+                <span>About</span>
+                <textarea name="about" rows="7" maxlength="1200" placeholder="Share your professional background, approach, and the communities or organizations you serve."></textarea>
+                <small><span data-count-for="about">0</span>/1200</small>
+              </label>
+
+              <fieldset class="profile-modes">
+                <legend>Ways I welcome collaboration</legend>
+                <div class="profile-mode-grid">
+                  <label><input type="checkbox" name="collaboration_modes" value="professional_consultation" /> Professional consultation</label>
+                  <label><input type="checkbox" name="collaboration_modes" value="referral_network" /> Referral network</label>
+                  <label><input type="checkbox" name="collaboration_modes" value="education_training" /> Education &amp; training</label>
+                  <label><input type="checkbox" name="collaboration_modes" value="policy_compliance" /> Policy &amp; compliance</label>
+                  <label><input type="checkbox" name="collaboration_modes" value="multidisciplinary_planning" /> Multidisciplinary planning</label>
+                </div>
+              </fieldset>
+
+              <label class="profile-field">
+                <span>Collaboration interests</span>
+                <textarea name="collaboration_interests" rows="5" maxlength="900" placeholder="What kinds of professionals, organizations, or projects are a good fit?"></textarea>
+                <small><span data-count-for="collaboration_interests">0</span>/900</small>
+              </label>
+
+              <label class="profile-field">
+                <span>A note to other professionals</span>
+                <textarea name="professional_note" rows="4" maxlength="600" placeholder="Add a general welcome, working preference, or helpful context."></textarea>
+                <small><span data-count-for="professional_note">0</span>/600</small>
+              </label>
+
+              <aside class="profile-safety-note">
+                <strong>Keep this professional and general.</strong>
+                <p>Do not enter client or patient names, case facts, privileged information, clinical details, or anything that would require consent to share.</p>
+              </aside>
+
+              <div class="profile-form-actions">
+                <button class="member-primary" type="submit" data-profile-save>Save private draft <span aria-hidden="true">→</span></button>
+                <p class="profile-save-status" data-profile-status role="status" aria-live="polite"></p>
+              </div>
+            </form>
+          </section>
         </div>
       </section>
     </main>
